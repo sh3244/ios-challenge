@@ -5,13 +5,15 @@ Please feel free to use the developer reviewing your work as a resource. If any 
 
 ## Submission Instructions
 
-1. Clone this repo and complete the challenge
-2. Send a patch file of your solution to your interviewer via email
-
-## Expectations
 1. Complete the challenge according to the Challenge Instructions below.
 1. Post your solution in a Github repo. Be sure to include a README.
 1. Send a link to your solution to challenge-accepted@salido.com.
+
+## Expectations
+1. You can model data supplied by the API in a way that is simple and makes sense.
+2. You can take modeled information and create an easily digestible UI around it.
+3. You can utilize appropriate frameworks to make your code fast, simple, and DRY.
+4. You can take a set of business requirements from end-to-end, keeping in mind how the user will interact with the final product.
 
 ## Context
 Imagine SALIDO has expanded its reach into the wine industry with the new "SALIDO Wine Club". We need to source product data from the wine.com API (http://api.wine.com) and load it into our own database of wine products.
