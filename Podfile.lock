@@ -1,0 +1,45 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - Facade (1.1.1)
+  - FLEX (2.4.0)
+  - Mantle (2.1.0):
+    - Mantle/extobjc (= 2.1.0)
+  - Mantle/extobjc (2.1.0)
+  - Realm (2.4.3):
+    - Realm/Headers (= 2.4.3)
+  - Realm/Headers (2.4.3)
+  - XLForm (3.3.0)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.1.0)
+  - Facade (~> 1.1.1)
+  - FLEX (~> 2.4.0)
+  - Mantle (~> 2.1.0)
+  - Realm (~> 2.4.3)
+  - XLForm (~> 3.0)
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Facade: 3c5c6fb1ba042d20885cfe5a290050f5b9351ca2
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  Realm: e08d60b0048ccccd3949c8c28a92c4db5712d7e9
+  XLForm: d5c391dfc62865927b5bcab0a5a0dbfb3e02b0ec
+
+PODFILE CHECKSUM: 83d960de2eb4b649c1502475c968b9441717ca1f
+
+COCOAPODS: 1.2.0
