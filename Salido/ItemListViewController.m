@@ -39,6 +39,8 @@
 
 @property (nonatomic, strong) NSString *searchString;
 
+@property (nonatomic, assign) BOOL firstLaunch;
+
 @end
 
 @implementation ItemListViewController
@@ -47,6 +49,7 @@
   [super viewDidLoad];
   self.title = @"Main";
   _searchString = @"high";
+  _firstLaunch = YES;
 
   _searchBar = [UISearchBar new];
   [self.view addSubview:_searchBar];
@@ -70,43 +73,41 @@
   _tableView.dataSource = self;
   [_tableView registerClass:[ItemTableViewCell class] forCellReuseIdentifier:NSStringFromClass([ItemTableViewCell class])];
 
-  UIBarButtonItem *settingsButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(launchSettings)];
+  UIBarButtonItem *settingsButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(launchSettings)];
   self.navigationItem.leftBarButtonItem = settingsButtonItem;
 
   _selectedPaths = [NSMutableArray new];
 
-  [self update];
+  [[LoginManager sharedManager] registerUserWithName:@"sam huang" withPin:@"111111" withEmail:@"fake@fake.fake"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  if (![[LoginManager sharedManager] currentlyLoggedIn]) {
+    [self launchLoginViewController];
+  } else if (_firstLaunch){
+    [self update];
+    NSDictionary *options = @{
+                              kCRToastTextKey : @"Welcome!",
+                              kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
+                              kCRToastBackgroundColorKey : [UIColor greenColor],
+                              kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
+                              kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
+                              kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
+                              kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
+                              };
+    [CRToastManager showNotificationWithOptions:options
+                                completionBlock:^{
+
+                                }];
+    _firstLaunch = NO;
+  }
 }
 
 - (void)viewWillLayoutSubviews {
   [super viewWillLayoutSubviews];
   [_searchBar anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:40];
   [_tableView alignUnder:_searchBar matchingLeftAndRightFillingHeightWithTopPadding:0 bottomPadding:0];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-
-  if (![[LoginManager sharedManager] currentlyLoggedIn]) {
-    [self launchLoginViewController];
-  } else {
-    [self update];
-  }
-
-  NSDictionary *options = @{
-                            kCRToastTextKey : @"Welcome!",
-                            kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
-                            kCRToastBackgroundColorKey : [UIColor greenColor],
-                            kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
-                            kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
-                            kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
-                            kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
-                            };
-  [CRToastManager showNotificationWithOptions:options
-                              completionBlock:^{
-
-                              }];
-  [_selectedPaths removeAllObjects];
 }
 
 - (void)refreshTableView:(UIRefreshControl *)refreshControl {
@@ -117,9 +118,14 @@
 #pragma mark - UISearchBar Delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+  [_searchBar resignFirstResponder];
   if (searchBar.text.length > 0) {
     _searchString = searchBar.text;
-    [self update];
+    [UIView animateWithDuration:base_duration animations:^{
+      _tableView.alpha = 0;
+    } completion:^(BOOL finished) {
+      [self update];
+    }];
   }
 }
 
@@ -128,6 +134,10 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(ItemTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
   Item *item = [_items objectAtIndex:indexPath.row];
   [cell setupWithItem:item];
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+//  [cell setNeedsLayout];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -169,7 +179,7 @@
 - (void)update {
   CatalogRequestModel *requestModel = [CatalogRequestModel new];
   requestModel.offset = 0;
-  requestModel.size = @(20).integerValue;
+  requestModel.size = @(10).integerValue;
   requestModel.search = _searchString;
   [[APIManager sharedManager] getItemsWithRequestModel:requestModel
                                                success:^(CatalogResponseModel *responseModel){
@@ -193,20 +203,18 @@
         [realm addObject:itemRealm];
       }
       [realm commitWriteTransaction];
-      [self fetchRealm];
-    }
-  });
-}
 
-- (void)fetchRealm {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    RLMResults *items = [Item allObjectsInRealm:[RLMRealm defaultRealm]];
-    _items = items;
-    [_tableView reloadData];
-    if (_tableView.alpha != 1) {
-      [UIView animateWithDuration:base_duration animations:^{
-        _tableView.alpha = 1;
-      }];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        RLMResults *items = [Item allObjectsInRealm:[RLMRealm defaultRealm]];
+        _items = items;
+        [_selectedPaths removeAllObjects];
+        [_tableView reloadData];
+        if (_tableView.alpha != 1) {
+          [UIView animateWithDuration:base_duration animations:^{
+            _tableView.alpha = 1;
+          }];
+        }
+      });
     }
   });
 }
@@ -228,7 +236,9 @@
 
   }]];
 
-  [self presentViewController:actionSheet animated:YES completion:nil];
+  [self.view.window.rootViewController presentViewController:actionSheet animated:YES completion:^{
+
+  }];
 }
 
 - (void)launchLoginViewController {

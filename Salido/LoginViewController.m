@@ -37,6 +37,8 @@
   _registerPinView = [RegisterPinView new];
   [self.view addSubview:_registerPinView];
   _registerPinView.nameField.delegate = self;
+  _registerPinView.emailField.delegate = self;
+
   _registerPinView.alpha = 0;
   _registerPinView.delegate = self;
 }

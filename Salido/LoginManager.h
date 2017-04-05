@@ -18,7 +18,7 @@
 - (BOOL)currentlyLoggedIn;
 
 - (void)performLoginWithPin:(nonnull NSString *)pin completion:(void (^ _Nullable)(void))completion;
-- (void)registerUserWithName:(nonnull NSString *)name withPin:(nonnull NSString *)pin;
+- (void)registerUserWithName:(nonnull NSString *)name withPin:(nonnull NSString *)pin withEmail:(nonnull NSString *)email;
 - (void)performLogOut;
 
 @end

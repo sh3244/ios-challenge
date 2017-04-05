@@ -44,6 +44,7 @@
 }
 
 - (void)layoutSubviews {
+  [super layoutSubviews];
   if (self.contentView.height > 120) {
     [self.contentView addSubview:_itemImageView];
     [self.contentView addSubview:_itemNameLabel];
@@ -62,12 +63,10 @@
     [self.contentView addSubview:_itemImageView];
     [self.contentView addSubview:_itemNameLabel];
     [self.contentView addSubview:_minPriceLabel];
-    [_itemImageView anchorTopLeftWithLeftPadding:10 topPadding:10 width:0 height:0];
-    [_itemNameLabel anchorTopLeftWithLeftPadding:10 topPadding:10 width:self.contentView.width height:35];
-    [_minPriceLabel anchorBottomLeftWithLeftPadding:10 bottomPadding:10 width:self.contentView.width height:35];
+    [_itemImageView anchorTopLeftWithLeftPadding:10 topPadding:10 width:70 height:70];
+    [_itemNameLabel alignToTheRightOf:_itemImageView matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:35];
+    [_minPriceLabel alignUnder:_itemNameLabel matchingLeftAndFillingWidthWithRightPadding:10 topPadding:10 height:35];
   }
-
-  [super layoutSubviews];
 }
 
 - (void)setupWithItem:(Item *)item {

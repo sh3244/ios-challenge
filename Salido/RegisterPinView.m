@@ -76,6 +76,8 @@
   _pinDisplayCode = @"******";
   _pinLabel = [Label new];
   [_pinLabel setText:_pinDisplayCode];
+  _pinLabel.textAlignment = NSTextAlignmentCenter;
+  _pinLabel.font = [UIFont boldSystemFontOfSize:48];
   [self addSubview:_pinLabel];
 
   _nameField = [TextField new];
@@ -96,8 +98,8 @@
 
 - (void)layoutSubviews {
   [_nameField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
-  [_emailField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
-  [_pinLabel alignUnder:_nameField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:80];
+  [_emailField alignUnder:_nameField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
+  [_pinLabel alignUnder:_emailField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:80];
   [_registerButton anchorBottomCenterFillingWidthWithLeftAndRightPadding:10 bottomPadding:10 height:80];
 
   [_pinView alignUnder:_pinLabel centeredFillingWidthWithLeftAndRightPadding:80 topPadding:10 height:360];
@@ -163,7 +165,7 @@
     [self reset];
   }
   else {
-
+    [self warnValidation];
   }
 }
 

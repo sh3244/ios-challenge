@@ -23,7 +23,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [[FLEXManager sharedManager] showExplorer];
+//  [[FLEXManager sharedManager] showExplorer];
 
   self.mainViewController = [[ItemListViewController alloc] init];
 
@@ -35,7 +35,7 @@
   [self.window makeKeyAndVisible];
 
   // Delete Realm Database
-//  [[NSFileManager defaultManager] removeItemAtURL:[RLMRealmConfiguration defaultConfiguration].fileURL error:nil];
+  [[NSFileManager defaultManager] removeItemAtURL:[RLMRealmConfiguration defaultConfiguration].fileURL error:nil];
 
   return YES;
 }
