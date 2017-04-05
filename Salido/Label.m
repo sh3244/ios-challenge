@@ -13,12 +13,16 @@
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
-    self.textAlignment = NSTextAlignmentCenter;
+    self.textAlignment = NSTextAlignmentLeft;
     self.textColor = [UIColor whiteColor];
-    self.font = [UIFont boldSystemFontOfSize:42];
+    self.font = [UIFont boldSystemFontOfSize:14];
     self.translatesAutoresizingMaskIntoConstraints = NO;
   }
   return self;
 }
+
+//- (CGSize)intrinsicContentSize {
+//  return CGSizeMake(320, 40);
+//}
 
 @end

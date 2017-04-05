@@ -23,7 +23,7 @@
 @property (nonatomic, strong) Button *clearButton;
 
 @property (nonatomic, strong) NSArray<Button *> *pinButtonArray;
-@property (nonatomic, strong) UIView *pinView;
+@property (nonatomic, strong) View *pinView;
 
 @property (nonatomic, strong) Label *pinLabel;
 @property (nonatomic, strong) Button *registerButton;
@@ -61,7 +61,7 @@
                       _button9
                       ];
 
-  _pinView = [UIView new];
+  _pinView = [View new];
 
   [_pinButtonArray enumerateObjectsUsingBlock:^(Button * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
     [_pinView addSubview:obj];

@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Facade/UIView+Facade.h>
+#import "View.h"
 
 #import "Item.h"
 
-@interface ItemDetailView : UIView
+@interface ItemDetailView : View
 
 - (void)display:(Item *)item;
 

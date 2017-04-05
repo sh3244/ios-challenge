@@ -17,23 +17,57 @@
 
 @implementation LoginManager
 
+- (instancetype)init {
+  self = [super init];
+
+  if (self) {
+    _loggedIn = NO;
+  }
+
+  return self;
+}
+
 + (instancetype)sharedManager {
+  static LoginManager *sharedManager = nil;
+
   static dispatch_once_t onceToken;
-  static LoginManager *sharedManager;
   dispatch_once(&onceToken, ^{
-    sharedManager = [[LoginManager alloc] init];
+    sharedManager = [[self alloc] init];
   });
 
   return sharedManager;
 }
 
-- (instancetype)init {
-  self = [super init];
+- (void)loginWithPin:(NSString *)pin {
+  [RLMRealm defaultRealm];
 
-  _loggedIn = NO;
-
-  return self;
+  RLMResults<User *> *users = [User objectsWhere:@"pin == %@", pin];
+  _user = users.firstObject;
 }
+
+- (BOOL)canLoginWithPin:(NSString *)pin {
+  [RLMRealm defaultRealm];
+
+  RLMResults<User *> *users = [User objectsWhere:@"pin == %@", pin];
+
+  assert(users.count <= 1);
+
+  if (users.count == 1) {
+    return true;
+  }
+
+  return false;
+}
+
+- (BOOL)tryLoginWithPin:(NSString *)pin {
+  if ([self canLoginWithPin:pin]) {
+    [self loginWithPin:pin];
+    return true;
+  }
+  return false;
+}
+
+#pragma mark - Public
 
 - (void)registerUserWithName:(NSString *)name withPin:(NSString *)pin {
   User *newUser = [User new];
@@ -47,29 +81,22 @@
   [realm commitWriteTransaction];
 }
 
-- (BOOL)canLoginWithPin:(NSString *)pin {
-  [RLMRealm defaultRealm];
-
-  RLMResults<User *> *users = [User objectsWhere:@"pin == %@", pin];
-
-  if (users.count != 0) {
-    return true;
-  }
-
-  return false;
-}
-
 - (void)performLoginWithPin:(NSString *)pin completion:(void (^)(void))completion {
-  if ([self canLoginWithPin:pin]) {
+  if ([self tryLoginWithPin:pin]) {
     _loggedIn = YES;
     completion();
   }
   else {
-    _loggedIn = NO;
+//    _loggedIn = NO;
   }
 }
 
-- (BOOL)isLoggedIn {
+- (void)performLogOut {
+  _loggedIn = NO;
+  _user = nil;
+}
+
+- (BOOL)currentlyLoggedIn {
   return _loggedIn;
 }
 

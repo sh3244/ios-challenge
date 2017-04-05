@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "Constant.h"
 
 @interface ViewController ()
 
@@ -18,6 +19,17 @@
   [super viewDidLoad];
   self.view.backgroundColor = [UIColor blackColor];
   self.title = @"Title";
+}
+
+#pragma mark - Custom
+
+- (void)dismissFromButton {
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setupModalStyle {
+  UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissFromButton)];
+  self.navigationItem.rightBarButtonItem = doneButtonItem;
 }
 
 #pragma mark - UITextFieldDelegate

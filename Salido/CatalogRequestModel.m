@@ -26,24 +26,4 @@
            };
 }
 
-#pragma mark - JSON Transformers
-
-+ (NSValueTransformer *)articlesToDateJSONTransformer {
-  return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *dateString, BOOL *success,
-                                                               NSError *__autoreleasing *error) {
-    return [self.dateFormatter dateFromString:dateString];
-  } reverseBlock:^id(NSDate *date, BOOL *success, NSError *__autoreleasing *error) {
-    return [self.dateFormatter stringFromDate:date];
-  }];
-}
-
-+ (NSValueTransformer *)articlesFromDateJSONTransformer {
-  return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *dateString, BOOL *success,
-                                                               NSError *__autoreleasing *error) {
-    return [self.dateFormatter dateFromString:dateString];
-  } reverseBlock:^id(NSDate *date, BOOL *success, NSError *__autoreleasing *error) {
-    return [self.dateFormatter stringFromDate:date];
-  }];
-}
-
 @end

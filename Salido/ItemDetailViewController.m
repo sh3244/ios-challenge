@@ -28,8 +28,7 @@
 
   self.title = @"Item Detail";
 
-  UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
-  self.navigationItem.rightBarButtonItem = doneButtonItem;
+  [self setupModalStyle];
 
   return self;
 }
@@ -41,10 +40,6 @@
   [_itemDetailView fillSuperview];
 
   [_itemDetailView display:_item];
-}
-
-- (void)done {
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

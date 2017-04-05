@@ -8,17 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Item.h"
-#import "User.h"
-
 #import <Realm/Realm.h>
+#import "User.h"
 
 @interface LoginManager : NSObject
 
 + (nonnull instancetype)sharedManager;
 
+- (BOOL)currentlyLoggedIn;
+
 - (void)performLoginWithPin:(nonnull NSString *)pin completion:(void (^ _Nullable)(void))completion;
 - (void)registerUserWithName:(nonnull NSString *)name withPin:(nonnull NSString *)pin;
-- (BOOL)isLoggedIn;
+- (void)performLogOut;
 
 @end

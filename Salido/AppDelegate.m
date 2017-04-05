@@ -23,7 +23,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  // [[FLEXManager sharedManager] showExplorer];
+  [[FLEXManager sharedManager] showExplorer];
 
   self.mainViewController = [[ItemListViewController alloc] init];
 

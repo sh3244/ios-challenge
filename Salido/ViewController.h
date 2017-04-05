@@ -10,4 +10,8 @@
 
 @interface ViewController : UIViewController <UITextFieldDelegate>
 
+- (void)setupModalStyle;
+
+- (void)dismissFromButton;
+
 @end

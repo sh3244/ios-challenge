@@ -8,7 +8,7 @@
 
 #import "APIManager.h"
 
-static NSString *const kItemListPath = @"api/beta2/service.svc/JSON/catalog?apikey=019a15f08aa396b28d6e0eab09ecade1";
+static NSString *kItemListPath = @"api/beta2/service.svc/JSON/catalog?apikey=019a15f08aa396b28d6e0eab09ecade1";
 
 @implementation APIManager
 

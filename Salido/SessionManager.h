@@ -10,6 +10,6 @@
 
 @interface SessionManager : AFHTTPSessionManager
 
-+ (id)sharedManager;
++ (instancetype)sharedManager;
 
 @end

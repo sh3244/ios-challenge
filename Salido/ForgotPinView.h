@@ -1,23 +1,23 @@
 //
-//  RegisterPinView.h
+//  ForgotPinView.h
 //  Salido
 //
-//  Created by Sam on 4/3/17.
+//  Created by Sam on 4/4/17.
 //  Copyright © 2017 Salido. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "View.h"
 
-@protocol RegisterPinDelegate <NSObject>
+@protocol ForgotPinDelegate <NSObject>
 
 - (void)registerWithName:(NSString *)name withPin:(NSString *)pin;
 
 @end
 
-@interface RegisterPinView : View
+@interface ForgotPinView : View
 
 @property (nonatomic, strong) TextField *nameField;
-@property (nonatomic, weak) id<RegisterPinDelegate> delegate;
+@property (nonatomic, weak) id<ForgotPinDelegate> delegate;
 
 @end

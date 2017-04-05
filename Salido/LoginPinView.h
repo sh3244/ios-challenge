@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Facade/UIView+Facade.h>
-
-#import "Button.h"
-#import "Label.h"
+#import "View.h"
 
 @protocol LoginPinDelegate <NSObject>
 
@@ -21,7 +18,7 @@
 
 @end
 
-@interface LoginPinView : UIView
+@interface LoginPinView : View
 
 @property (nonatomic, weak) id<LoginPinDelegate> delegate;
 

@@ -8,21 +8,21 @@
 
 #import "SessionManager.h"
 
-static NSString *const kBaseURL = @"https://services.wine.com/";
+static NSString *kBaseURL = @"https://services.wine.com/";
 
 @implementation SessionManager
 
-- (id)init {
+- (instancetype)init {
   self = [super initWithBaseURL:[NSURL URLWithString:kBaseURL]];
-  if(!self) return nil;
-
-  self.responseSerializer = [AFJSONResponseSerializer serializer];
-  self.requestSerializer = [AFJSONRequestSerializer serializer];
+  if (self) {
+    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    self.requestSerializer = [AFJSONRequestSerializer serializer];
+  }
 
   return self;
 }
 
-+ (id)sharedManager {
++ (instancetype)sharedManager {
   static SessionManager *_sessionManager = nil;
 
   static dispatch_once_t onceToken;

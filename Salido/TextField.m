@@ -23,4 +23,17 @@
   return self;
 }
 
+- (instancetype)initWithValidator:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+    self.textAlignment = NSTextAlignmentCenter;
+    self.textColor = [UIColor whiteColor];
+    self.font = [UIFont boldSystemFontOfSize:24];
+    self.backgroundColor = [UIColor darkGrayColor];
+    self.tintColor = [UIColor whiteColor];
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+  }
+  return self;
+}
+
 @end

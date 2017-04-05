@@ -8,6 +8,8 @@
 
 #import "ItemDetailView.h"
 
+#import "Item.h"
+
 @interface ItemDetailView()
 
 @property (nonatomic, strong) UIImageView *itemImageView;
@@ -24,8 +26,6 @@
   _itemImageView = [UIImageView new];
   _itemNameLabel = [UILabel new];
   _itemTypeLabel = [UILabel new];
-
-  _itemImageView.backgroundColor = [UIColor redColor];
 
   [self addSubview:_itemImageView];
   [self addSubview:_itemNameLabel];
