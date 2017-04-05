@@ -11,13 +11,14 @@
 
 @protocol RegisterPinDelegate <NSObject>
 
-- (void)registerWithName:(NSString *)name withPin:(NSString *)pin;
+- (BOOL)registerWithName:(NSString *)name withPin:(NSString *)pin withEmail:(NSString *)email;
 
 @end
 
 @interface RegisterPinView : View
 
 @property (nonatomic, strong) TextField *nameField;
+@property (nonatomic, strong) TextField *emailField;
 @property (nonatomic, weak) id<RegisterPinDelegate> delegate;
 
 @end

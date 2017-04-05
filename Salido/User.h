@@ -14,7 +14,8 @@
 @property NSString *name;
 @property NSString *pin;
 
-//@property NSString *email;
+@property NSString *email;
+//@property NSString *phone;
 //@property NSDate *hiringDate;
 //
 //@property RLMArray<Item *><Item> *cart;

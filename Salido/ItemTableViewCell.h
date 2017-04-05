@@ -12,6 +12,6 @@
 
 @interface ItemTableViewCell : UITableViewCell
 
-- (void)setupWithName:(NSString *)name withType:(NSString *)type withItem:(Item *)item;
+- (void)setupWithItem:(Item *)item;
 
 @end

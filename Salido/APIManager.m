@@ -16,11 +16,9 @@ static NSString *kItemListPath = @"api/beta2/service.svc/JSON/catalog?apikey=019
                                               success:(void (^)(CatalogResponseModel *responseModel))success
                                               failure:(void (^)(NSError *error))failure{
 
-//  NSDictionary *parameters = [MTLJSONAdapter JSONDictionaryFromModel:requestModel error:nil];
-//  NSMutableDictionary *parametersWithKey = [[NSMutableDictionary alloc] initWithDictionary:@{}];
-//  [parametersWithKey setObject:kApiKey forKey:@"apikey"];
+  NSDictionary *parameters = [MTLJSONAdapter JSONDictionaryFromModel:requestModel error:nil];
 
-  return [self GET:kItemListPath parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+  return [self GET:kItemListPath parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     NSDictionary *responseDictionary = (NSDictionary *)responseObject;
 
     NSError *error;

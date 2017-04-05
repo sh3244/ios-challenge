@@ -7,6 +7,7 @@
 //
 
 #import "RegisterPinView.h"
+#import <CRToast/CRToast.h>
 
 @interface RegisterPinView()
 
@@ -81,6 +82,10 @@
   _nameField.placeholder = @"name";
   [self addSubview:_nameField];
 
+  _emailField = [TextField new];
+  _emailField.placeholder = @"email";
+  [self addSubview:_emailField];
+
   _registerButton = [Button new];
   [_registerButton setTitle:@"Register" forState:UIControlStateNormal];
   [_registerButton addTarget:self action:@selector(registerButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -90,7 +95,8 @@
 }
 
 - (void)layoutSubviews {
-  [_nameField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:80];
+  [_nameField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
+  [_emailField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
   [_pinLabel alignUnder:_nameField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:80];
   [_registerButton anchorBottomCenterFillingWidthWithLeftAndRightPadding:10 bottomPadding:10 height:80];
 
@@ -124,15 +130,52 @@
   }
 }
 
+- (BOOL)inputIsValid {
+  if ([[_pinDisplayCode stringByReplacingOccurrencesOfString:@"*" withString:@""] isEqualToString:_pinDisplayCode]) {
+    if (_nameField.text.length > 3 && [_nameField.text containsString:@" "]) {
+      return true;
+    }
+  }
+  return NO;
+}
+
+- (void)warnValidation {
+  NSDictionary *options = @{
+                            kCRToastTextKey : @"Register with a 6 digit pin and your full name...",
+                            kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
+                            kCRToastBackgroundColorKey : [UIColor redColor],
+                            kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
+                            kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
+                            kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
+                            kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
+                            };
+  [CRToastManager showNotificationWithOptions:options
+                              completionBlock:^{
+
+                              }];
+}
+
 #pragma mark - RegisterPinDelegate
 
 - (void)registerButtonPressed:(Button *)sender {
-  [_delegate registerWithName:_nameField.text withPin:_pinDisplayCode];
+  if ([self inputIsValid]) {
+    [_delegate registerWithName:_nameField.text withPin:_pinDisplayCode withEmail:_emailField.text];
+    [self reset];
+  }
+  else {
+
+  }
 }
 
 - (void)updatePinCode:(NSString *)pin {
   [_pinLabel setText:pin];
   _pinDisplayCode = pin;
+}
+
+- (void)reset {
+  [self updatePinCode:@""];
+  [_nameField setText:@""];
+  [_emailField setText:@""];
 }
 
 @end

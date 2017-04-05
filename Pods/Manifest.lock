@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - CRToast (0.0.9)
   - Facade (1.1.1)
   - FLEX (2.4.0)
   - Mantle (2.1.0):
@@ -22,24 +23,23 @@ PODS:
   - Realm (2.5.0):
     - Realm/Headers (= 2.5.0)
   - Realm/Headers (2.5.0)
-  - XLForm (3.3.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
+  - CRToast (~> 0.0.7)
   - Facade (~> 1.1.1)
   - FLEX (~> 2.4.0)
   - Mantle (~> 2.1.0)
   - Realm (~> 2.5.0)
-  - XLForm (~> 3.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  CRToast: 5a78c22b921c5ed3487488af605bc403a9c92fed
   Facade: 3c5c6fb1ba042d20885cfe5a290050f5b9351ca2
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   Realm: 62abce501668580092d2be9b6ba7324a3d5f906a
-  XLForm: d5c391dfc62865927b5bcab0a5a0dbfb3e02b0ec
 
-PODFILE CHECKSUM: a95d9da16980e34006f634379d8be9bed6c66a24
+PODFILE CHECKSUM: c83f949be8cd9e6872709d2d808d46f1a1f081a7
 
 COCOAPODS: 1.2.0

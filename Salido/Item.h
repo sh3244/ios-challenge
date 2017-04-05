@@ -8,11 +8,16 @@
 
 #import <Realm/Realm.h>
 #import "ItemModel.h"
+#import "ItemImage.h"
 
 @interface Item : RLMObject
 
 @property NSString *name;
 @property NSString *type;
+@property RLMArray<ItemImage> *images;
+@property double minPrice;
+@property NSString *vintage;
+@property NSString *url;
 
 - (id)initWithMantleModel:(ItemModel *)itemModel;
 

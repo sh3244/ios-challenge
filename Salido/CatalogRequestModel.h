@@ -10,8 +10,8 @@
 
 @interface CatalogRequestModel : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, copy) NSNumber *listOffset;
-@property (nonatomic, copy) NSNumber *listSize;
-@property (nonatomic, copy) NSString *searchTerm;
+@property (nonatomic, assign) NSInteger offset;
+@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) NSString *search;
 
 @end

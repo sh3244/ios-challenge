@@ -73,6 +73,8 @@
 
   _pinDisplayCode = @"******";
   _pinLabel = [Label new];
+  _pinLabel.textAlignment = NSTextAlignmentCenter;
+  _pinLabel.font = [UIFont boldSystemFontOfSize:48];
   [_pinLabel setText:_pinDisplayCode];
 
   _registerButton = [Button new];

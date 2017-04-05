@@ -16,8 +16,17 @@
   if (!self) {
     return nil;
   }
-  self.name = itemModel.name;
-  self.type = itemModel.type;
+  _name = itemModel.name;
+  _type = itemModel.type;
+  _minPrice = itemModel.minPrice.doubleValue;
+  _vintage = itemModel.vintage;
+  _url = itemModel.url.absoluteString;
+
+  _images = [[RLMArray<ItemImage> alloc] initWithObjectClassName:[ItemImage className]];
+  for (ItemImageModel *attribute in itemModel.attributes) {
+    ItemImage *image = [[ItemImage alloc] initWithMantleModel:attribute];
+    [_images addObject:image];
+  }
 
   return self;
 }

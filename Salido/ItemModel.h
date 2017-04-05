@@ -7,10 +7,15 @@
 //
 
 #import <Mantle/Mantle.h>
+#import "ItemImageModel.h"
 
 @interface ItemModel : MTLModel <MTLJSONSerializing>
 
-@property (nonatomic, copy)NSString *name;
-@property (nonatomic, copy)NSString *type;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSArray<ItemImageModel *> *attributes;
+@property (nonatomic, copy) NSNumber *minPrice;
+@property (nonatomic, copy) NSString *vintage;
+@property (nonatomic, copy) NSURL *url;
 
 @end

@@ -69,10 +69,11 @@
 
 #pragma mark - Public
 
-- (void)registerUserWithName:(NSString *)name withPin:(NSString *)pin {
+- (void)registerUserWithName:(NSString *)name withPin:(NSString *)pin withEmail:(NSString *)email {
   User *newUser = [User new];
   newUser.name = name;
   newUser.pin = pin;
+  newUser.email = email;
 
   RLMRealm *realm = [RLMRealm defaultRealm];
 

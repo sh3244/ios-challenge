@@ -7,11 +7,12 @@
 //
 
 #import "ItemDetailViewController.h"
+#import "View.h"
 
 @interface ItemDetailViewController ()
 
 @property (nonatomic, strong) Item *item;
-@property (nonatomic, strong) ItemDetailView *itemDetailView;
+@property (nonatomic, strong) UIWebView *webView;
 
 @end
 
@@ -21,25 +22,23 @@
   self = [super init];
 
   _item = item;
-
-  _itemDetailView = [ItemDetailView new];
-
-  self.view.backgroundColor = [UIColor lightGrayColor];
-
-  self.title = @"Item Detail";
-
-  [self setupModalStyle];
+  _webView = [UIWebView new];
 
   return self;
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  [self.view addSubview:_itemDetailView];
+  self.title = @"Item Detail";
+  [self setupModalStyle];
 
-  [_itemDetailView fillSuperview];
+  [self.view addSubview:_webView];
 
-  [_itemDetailView display:_item];
+  [_webView fillSuperview];
+
+  NSURL *targetURL = [NSURL URLWithString:_item.url];
+  NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
+  [_webView loadRequest:request];
 }
 
 @end

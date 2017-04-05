@@ -12,4 +12,4 @@
 
 #endif /* Constant_h */
 
-NSInteger base_duration = 0.5;
+static double base_duration = 0.7;

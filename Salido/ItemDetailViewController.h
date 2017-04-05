@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
 
-#import "ItemDetailView.h"
-
 #import "Item.h"
 
 @interface ItemDetailViewController : ViewController

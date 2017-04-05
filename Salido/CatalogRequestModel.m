@@ -20,9 +20,9 @@
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-//           @"listOffset": @"offset",
-//           @"listSize": @"size",
-//           @"searchTerm": @"search"
+           @"offset": @"offset",
+           @"size": @"size",
+           @"search": @"search"
            };
 }
 

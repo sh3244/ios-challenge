@@ -13,8 +13,16 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
            @"name": @"Name",
-           @"type": @"Type"
+           @"type": @"Type",
+           @"attributes": @"Labels",
+           @"minPrice": @"PriceMin",
+           @"vintage": @"Vintage",
+           @"url": @"Url"
            };
+}
+
++ (NSValueTransformer *)attributesJSONTransformer {
+  return [MTLJSONAdapter arrayTransformerWithModelClass:ItemImageModel.class];
 }
 
 @end

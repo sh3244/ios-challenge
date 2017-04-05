@@ -11,7 +11,8 @@ target 'Salido' do
   pod 'Realm', '~> 2.5.0'
   pod 'Mantle', '~> 2.1.0'
   pod 'AFNetworking', '~> 3.1.0'
-  pod 'XLForm', '~> 3.0'
+
+  pod 'CRToast', '~> 0.0.7'
 
   target 'SalidoTests' do
     inherit! :search_paths

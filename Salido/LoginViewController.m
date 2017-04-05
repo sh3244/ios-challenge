@@ -15,6 +15,8 @@
 
 #import "LoginManager.h"
 
+#import "Constant.h"
+
 @interface LoginViewController () <LoginPinDelegate, RegisterPinDelegate>
 
 @property (nonatomic, strong) LoginPinView *loginPinView;
@@ -66,10 +68,10 @@
 }
 
 - (void)didSelectRegister {
-  [UIView animateWithDuration:1 animations:^{
+  [UIView animateWithDuration:base_duration animations:^{
     _loginPinView.alpha = 0;
   } completion:^(BOOL finished) {
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:base_duration animations:^{
       _registerPinView.alpha = 1;
     }];
   }];
@@ -82,8 +84,8 @@
 
 #pragma mark - RegisterPinDelegate
 
-- (void)registerWithName:(NSString *)name withPin:(NSString *)pin {
-  [[LoginManager sharedManager] registerUserWithName:name withPin:pin];
+- (BOOL)registerWithName:(NSString *)name withPin:(NSString *)pin withEmail:(NSString *)email {
+  [[LoginManager sharedManager] registerUserWithName:name withPin:pin withEmail:email];
 
   [UIView animateWithDuration:1 animations:^{
     _registerPinView.alpha = 0;
@@ -92,6 +94,8 @@
       _loginPinView.alpha = 1;
     }];
   }];
+
+  return true;
 }
 
 @end
