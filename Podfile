@@ -3,7 +3,7 @@
 
 target 'Salido' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
+  use_frameworks!
 
   # Pods for Salido
   pod 'Facade', '~> 1.1.1'
@@ -13,6 +13,9 @@ target 'Salido' do
   pod 'AFNetworking', '~> 3.1.0'
 
   pod 'CRToast', '~> 0.0.7'
+
+  pod 'Quick'
+  pod 'Nimble'
 
   target 'SalidoTests' do
     inherit! :search_paths

@@ -56,4 +56,29 @@
   return didValidate;
 }
 
+- (BOOL)validateName:(NSString *)string {
+  NSError *error = nil;
+  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"/w+" options:NSRegularExpressionCaseInsensitive error:&error];
+
+  NSAssert(regex, @"Unable to create regular expression");
+
+  NSRange textRange = NSMakeRange(0, string.length);
+  NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];
+
+  BOOL didValidate = NO;
+
+  if (matchRange.location != NSNotFound) didValidate = YES;
+
+  return didValidate;
+}
+
+//- (BOOL)inputIsValid {
+//  if ([[_pinDisplayCode stringByReplacingOccurrencesOfString:@"*" withString:@""] isEqualToString:_pinDisplayCode]) {
+//    if (_nameField.text.length > 3 && [_nameField.text containsString:@" "]) {
+//      return true;
+//    }
+//  }
+//  return NO;
+//}
+
 @end

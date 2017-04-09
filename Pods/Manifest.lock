@@ -20,6 +20,8 @@ PODS:
   - Mantle (2.1.0):
     - Mantle/extobjc (= 2.1.0)
   - Mantle/extobjc (2.1.0)
+  - Nimble (6.1.0)
+  - Quick (1.1.0)
   - Realm (2.5.0):
     - Realm/Headers (= 2.5.0)
   - Realm/Headers (2.5.0)
@@ -30,6 +32,8 @@ DEPENDENCIES:
   - Facade (~> 1.1.1)
   - FLEX (~> 2.4.0)
   - Mantle (~> 2.1.0)
+  - Nimble
+  - Quick
   - Realm (~> 2.5.0)
 
 SPEC CHECKSUMS:
@@ -38,8 +42,10 @@ SPEC CHECKSUMS:
   Facade: 3c5c6fb1ba042d20885cfe5a290050f5b9351ca2
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  Nimble: c53e6903fee94041b90ded74f135820437d8bf59
+  Quick: dafc587e21eed9f4cab3249b9f9015b0b7a7f71d
   Realm: 62abce501668580092d2be9b6ba7324a3d5f906a
 
-PODFILE CHECKSUM: c83f949be8cd9e6872709d2d808d46f1a1f081a7
+PODFILE CHECKSUM: 6c3963010e34a39a23af36b1fea8927129529907
 
 COCOAPODS: 1.2.0

@@ -149,7 +149,9 @@
                             kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
                             kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
                             kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
-                            kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
+                            kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop),
+                            kCRToastNotificationTypeKey : @(CRToastTypeCustom),
+                            kCRToastNotificationPreferredHeightKey : @(40)
                             };
   [CRToastManager showNotificationWithOptions:options
                               completionBlock:^{

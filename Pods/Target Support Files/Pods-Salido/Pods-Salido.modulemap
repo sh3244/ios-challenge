@@ -1,0 +1,6 @@
+framework module Pods_Salido {
+  umbrella header "Pods-Salido-umbrella.h"
+
+  export *
+  module * { export * }
+}
