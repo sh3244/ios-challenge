@@ -13,7 +13,6 @@
 		220E42101E9433E200D891D6 /* ItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 220E420F1E9433E200D891D6 /* ItemTableViewCell.m */; };
 		220E42131E94341500D891D6 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220E42121E94341500D891D6 /* ImageView.m */; };
 		220E42161E943DA700D891D6 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = 220E42151E943DA700D891D6 /* View.m */; };
-		220E421A1E946F3500D891D6 /* UIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 220E42191E946F3500D891D6 /* UIManager.m */; };
 		222FFD161E920ABF006500A1 /* RegisterPinView.m in Sources */ = {isa = PBXBuildFile; fileRef = 222FFD151E920ABF006500A1 /* RegisterPinView.m */; };
 		222FFD191E920B88006500A1 /* Button.m in Sources */ = {isa = PBXBuildFile; fileRef = 222FFD181E920B88006500A1 /* Button.m */; };
 		222FFD1C1E920DBE006500A1 /* Label.m in Sources */ = {isa = PBXBuildFile; fileRef = 222FFD1B1E920DBE006500A1 /* Label.m */; };
@@ -32,6 +31,7 @@
 		2236DD9B1E904514005B106F /* EmployeeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2236DD9A1E904514005B106F /* EmployeeListViewController.m */; };
 		226D28221E948EA3002147BB /* ItemImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 226D28211E948EA3002147BB /* ItemImageModel.m */; };
 		226D28251E94973A002147BB /* ItemImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 226D28241E94973A002147BB /* ItemImage.m */; };
+		226D28291E95CAF8002147BB /* UserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 226D28281E95CAF8002147BB /* UserTableViewCell.m */; };
 		22FF24051E904993004F785D /* LoginPinView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FF24041E904993004F785D /* LoginPinView.m */; };
 		22FF24081E905145004F785D /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FF24071E905145004F785D /* NavigationController.m */; };
 		22FF240B1E908D28004F785D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FF240A1E908D28004F785D /* User.m */; };
@@ -77,8 +77,6 @@
 		220E42121E94341500D891D6 /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		220E42141E943DA700D891D6 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		220E42151E943DA700D891D6 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = View.m; sourceTree = "<group>"; };
-		220E42181E946F3500D891D6 /* UIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIManager.h; sourceTree = "<group>"; };
-		220E42191E946F3500D891D6 /* UIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIManager.m; sourceTree = "<group>"; };
 		220E421B1E946FA300D891D6 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		222FFD141E920ABF006500A1 /* RegisterPinView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterPinView.h; sourceTree = "<group>"; };
 		222FFD151E920ABF006500A1 /* RegisterPinView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterPinView.m; sourceTree = "<group>"; };
@@ -117,6 +115,8 @@
 		226D28211E948EA3002147BB /* ItemImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemImageModel.m; sourceTree = "<group>"; };
 		226D28231E94973A002147BB /* ItemImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemImage.h; sourceTree = "<group>"; };
 		226D28241E94973A002147BB /* ItemImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemImage.m; sourceTree = "<group>"; };
+		226D28271E95CAF8002147BB /* UserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTableViewCell.h; sourceTree = "<group>"; };
+		226D28281E95CAF8002147BB /* UserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTableViewCell.m; sourceTree = "<group>"; };
 		22FF24031E904993004F785D /* LoginPinView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginPinView.h; sourceTree = "<group>"; };
 		22FF24041E904993004F785D /* LoginPinView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPinView.m; sourceTree = "<group>"; };
 		22FF24061E905145004F785D /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		220E42171E943DDC00D891D6 /* Custom */ = {
+		220E42171E943DDC00D891D6 /* Default */ = {
 			isa = PBXGroup;
 			children = (
 				22FF24061E905145004F785D /* NavigationController.h */,
@@ -187,13 +187,13 @@
 				222FFD1E1E920F6D006500A1 /* ViewController.h */,
 				222FFD1F1E920F6D006500A1 /* ViewController.m */,
 			);
-			name = Custom;
+			name = Default;
 			sourceTree = "<group>";
 		};
 		222FFD1D1E920EC0006500A1 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				222FFD211E9213EB006500A1 /* Custom */,
+				222FFD211E9213EB006500A1 /* Default */,
 				222FFD141E920ABF006500A1 /* RegisterPinView.h */,
 				222FFD151E920ABF006500A1 /* RegisterPinView.m */,
 				22FF24031E904993004F785D /* LoginPinView.h */,
@@ -202,11 +202,13 @@
 				220E42091E9425DF00D891D6 /* ForgotPinView.m */,
 				220E420E1E9433E200D891D6 /* ItemTableViewCell.h */,
 				220E420F1E9433E200D891D6 /* ItemTableViewCell.m */,
+				226D28271E95CAF8002147BB /* UserTableViewCell.h */,
+				226D28281E95CAF8002147BB /* UserTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
 		};
-		222FFD211E9213EB006500A1 /* Custom */ = {
+		222FFD211E9213EB006500A1 /* Default */ = {
 			isa = PBXGroup;
 			children = (
 				220E42141E943DA700D891D6 /* View.h */,
@@ -220,7 +222,7 @@
 				220E42111E94341500D891D6 /* ImageView.h */,
 				220E42121E94341500D891D6 /* ImageView.m */,
 			);
-			name = Custom;
+			name = Default;
 			sourceTree = "<group>";
 		};
 		2236DD4E1E903EDA005B106F = {
@@ -250,9 +252,7 @@
 			children = (
 				2236DD5D1E903EDA005B106F /* AppDelegate.h */,
 				2236DD5E1E903EDA005B106F /* AppDelegate.m */,
-				22FF242A1E91A5A9004F785D /* Manager */,
-				22FF24291E91A5A2004F785D /* Request */,
-				22FF24281E91A593004F785D /* Realm Model */,
+				226D28261E95C94F002147BB /* Model */,
 				22FF24151E90B8FC004F785D /* View Controller */,
 				222FFD1D1E920EC0006500A1 /* View */,
 				2236DD661E903EDA005B106F /* Assets.xcassets */,
@@ -289,6 +289,16 @@
 			path = SalidoUITests;
 			sourceTree = "<group>";
 		};
+		226D28261E95C94F002147BB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				22FF242A1E91A5A9004F785D /* Manager */,
+				22FF24291E91A5A2004F785D /* Request */,
+				22FF24281E91A593004F785D /* Realm Model */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		22FF24151E90B8FC004F785D /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,7 +314,7 @@
 				2236DD971E904505005B106F /* OrderViewController.m */,
 				2236DD991E904514005B106F /* EmployeeListViewController.h */,
 				2236DD9A1E904514005B106F /* EmployeeListViewController.m */,
-				220E42171E943DDC00D891D6 /* Custom */,
+				220E42171E943DDC00D891D6 /* Default */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -350,8 +360,6 @@
 				22FF24321E91B2AC004F785D /* LoginManager.m */,
 				220E420B1E9429FA00D891D6 /* StringManager.h */,
 				220E420C1E9429FA00D891D6 /* StringManager.m */,
-				220E42181E946F3500D891D6 /* UIManager.h */,
-				220E42191E946F3500D891D6 /* UIManager.m */,
 				220E421B1E946FA300D891D6 /* Constant.h */,
 			);
 			name = Manager;
@@ -667,7 +675,6 @@
 				22FF24181E90B95E004F785D /* CatalogRequestModel.m in Sources */,
 				226D28251E94973A002147BB /* ItemImage.m in Sources */,
 				2236DD951E9044F4005B106F /* ShoppingCartViewController.m in Sources */,
-				220E421A1E946F3500D891D6 /* UIManager.m in Sources */,
 				22FF24241E90BE04004F785D /* CatalogResponseModel.m in Sources */,
 				222FFD201E920F6D006500A1 /* ViewController.m in Sources */,
 				22FF24331E91B2AC004F785D /* LoginManager.m in Sources */,
@@ -679,6 +686,7 @@
 				226D28221E948EA3002147BB /* ItemImageModel.m in Sources */,
 				222FFD1C1E920DBE006500A1 /* Label.m in Sources */,
 				2236DD621E903EDA005B106F /* LoginViewController.m in Sources */,
+				226D28291E95CAF8002147BB /* UserTableViewCell.m in Sources */,
 				22FF242D1E91A873004F785D /* ItemDetailViewController.m in Sources */,
 				222FFD191E920B88006500A1 /* Button.m in Sources */,
 				2236DD5F1E903EDA005B106F /* AppDelegate.m in Sources */,

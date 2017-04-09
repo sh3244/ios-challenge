@@ -56,7 +56,7 @@
   _searchBar.barStyle = UISearchBarStyleMinimal;
   _searchBar.tintColor = [UIColor whiteColor];
   _searchBar.delegate = self;
-  [_searchBar setText:@"high"];
+  [_searchBar setText:@"wine"];
 
   _tableView = [UITableView new];
   [self.view addSubview:_tableView];
