@@ -14,9 +14,6 @@ target 'Salido' do
 
   pod 'CRToast', '~> 0.0.7'
 
-  pod 'Quick'
-  pod 'Nimble'
-
   target 'SalidoTests' do
     inherit! :search_paths
     # Pods for testing

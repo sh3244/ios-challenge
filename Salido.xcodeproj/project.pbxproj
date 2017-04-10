@@ -845,6 +845,7 @@
 			baseConfigurationReference = 7E21A17B27D5011D7E965B16 /* Pods-Salido.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = 82QRSDA4CN;
 				INFOPLIST_FILE = Salido/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -860,6 +861,7 @@
 			baseConfigurationReference = 483880DE47AF30FF41088732 /* Pods-Salido.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = 82QRSDA4CN;
 				INFOPLIST_FILE = Salido/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

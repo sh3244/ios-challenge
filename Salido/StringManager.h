@@ -12,6 +12,6 @@
 
 + (instancetype)sharedManager;
 
-- (BOOL)validateString:(NSString *)string withPattern:(NSString *)pattern;
+- (BOOL)validateName:(NSString *)string;
 
 @end
