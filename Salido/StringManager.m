@@ -22,45 +22,22 @@
 
 #pragma mark - Search Validation
 
-- (BOOL)validateSearchString:(NSString *)string withPattern:(NSString *)pattern {
-  NSError *error = nil;
-  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-
-  NSAssert(regex, @"Unable to create regular expression");
-
-  NSRange textRange = NSMakeRange(0, string.length);
-  NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];
-
-  BOOL didValidate = NO;
-
-  if (matchRange.location != NSNotFound) didValidate = YES;
-
-  return didValidate;
+- (BOOL)validateSearch:(NSString *)string {
+  return [self validateString:string withRegexPattern:@"^[a-z0-9 ]+$"];
 }
 
 #pragma mark - Login Validation
 
-- (BOOL)validateLoginString:(NSString *)string withPattern:(NSString *)pattern {
-  NSError *error = nil;
-  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-
-  NSAssert(regex, @"Unable to create regular expression");
-
-  NSRange textRange = NSMakeRange(0, string.length);
-  NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];
-
-  BOOL didValidate = NO;
-
-  if (matchRange.location != NSNotFound) didValidate = YES;
-
-  return didValidate;
+- (BOOL)validateName:(NSString *)string {
+  return [self validateString:string withRegexPattern:@"^[a-z0-9]+$"];
 }
 
-- (BOOL)validateName:(NSString *)string {
-  NSError *error = nil;
-  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"/w+" options:NSRegularExpressionCaseInsensitive error:&error];
+- (BOOL)validateEmail:(NSString *)string {
+  return [self validateString:string withRegexPattern:@"^[a-z0-9]+@[a-z0-9]+\\.[a-z0-9]+$"];
+}
 
-  NSAssert(regex, @"Unable to create regular expression");
+- (BOOL)validateString:(NSString *)string withRegexPattern:(NSString *)pattern {
+  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
 
   NSRange textRange = NSMakeRange(0, string.length);
   NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];

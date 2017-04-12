@@ -28,11 +28,10 @@
 }
 
 + (instancetype)sharedManager {
-  static LoginManager *sharedManager = nil;
-
   static dispatch_once_t onceToken;
+  static LoginManager *sharedManager;
   dispatch_once(&onceToken, ^{
-    sharedManager = [[self alloc] init];
+    sharedManager = [[LoginManager alloc] init];
   });
 
   return sharedManager;

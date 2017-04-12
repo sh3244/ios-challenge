@@ -26,8 +26,6 @@
 
 #import "Constant.h"
 
-#import <CRToast/CRToast.h>
-
 @interface ItemListViewController () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -48,7 +46,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.title = @"Main";
-  _searchString = @"high";
+  _searchString = @"wine";
   _firstLaunch = YES;
 
   _searchBar = [UISearchBar new];
@@ -56,7 +54,7 @@
   _searchBar.barStyle = UISearchBarStyleMinimal;
   _searchBar.tintColor = [UIColor whiteColor];
   _searchBar.delegate = self;
-  [_searchBar setText:@"wine"];
+  [_searchBar setText:_searchString];
 
   _tableView = [UITableView new];
   [self.view addSubview:_tableView];
@@ -73,8 +71,9 @@
   _tableView.dataSource = self;
   [_tableView registerClass:[ItemTableViewCell class] forCellReuseIdentifier:NSStringFromClass([ItemTableViewCell class])];
 
-  UIBarButtonItem *settingsButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(launchSettings)];
-  self.navigationItem.leftBarButtonItem = settingsButtonItem;
+  UIBarButtonItem *logOutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOut)];
+  UIBarButtonItem *viewCartButton = [[UIBarButtonItem alloc] initWithTitle:@"Cart" style:UIBarButtonItemStylePlain target:self action:@selector(launchShoppingCartViewController)];
+  self.navigationItem.leftBarButtonItems = @[logOutButton, viewCartButton];
 
   _selectedPaths = [NSMutableArray new];
 
@@ -87,19 +86,7 @@
     [self launchLoginViewController];
   } else if (_firstLaunch){
     [self update];
-    NSDictionary *options = @{
-                              kCRToastTextKey : @"Welcome!",
-                              kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
-                              kCRToastBackgroundColorKey : [UIColor greenColor],
-                              kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
-                              kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
-                              kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
-                              kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
-                              };
-    [CRToastManager showNotificationWithOptions:options
-                                completionBlock:^{
-
-                                }];
+    // TODO alert
     _firstLaunch = NO;
   }
 }
@@ -220,26 +207,6 @@
 }
 
 #pragma mark - Launch
-
-- (void)launchSettings {
-  UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"Action Sheet" message:@"Using the alert controller" preferredStyle:UIAlertControllerStyleActionSheet];
-
-  [actionSheet addAction:[UIAlertAction actionWithTitle:@"View Cart" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    [self launchShoppingCartViewController];
-  }]];
-
-  [actionSheet addAction:[UIAlertAction actionWithTitle:@"Log out" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-    [self logOut];
-  }]];
-
-  [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-
-  }]];
-
-  [self.view.window.rootViewController presentViewController:actionSheet animated:YES completion:^{
-
-  }];
-}
 
 - (void)launchLoginViewController {
   LoginViewController *loginController = [LoginViewController new];

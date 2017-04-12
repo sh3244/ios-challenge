@@ -7,7 +7,7 @@
 //
 
 #import "RegisterPinView.h"
-#import <CRToast/CRToast.h>
+#import "AlertManager.h"
 
 @interface RegisterPinView()
 
@@ -142,21 +142,7 @@
 }
 
 - (void)warnValidation {
-  NSDictionary *options = @{
-                            kCRToastTextKey : @"Register with a 6 digit pin and your full name...",
-                            kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
-                            kCRToastBackgroundColorKey : [UIColor redColor],
-                            kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
-                            kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
-                            kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
-                            kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop),
-                            kCRToastNotificationTypeKey : @(CRToastTypeCustom),
-                            kCRToastNotificationPreferredHeightKey : @(40)
-                            };
-  [CRToastManager showNotificationWithOptions:options
-                              completionBlock:^{
-
-                              }];
+  [[AlertManager sharedManager] showAlertWithMessage:@"Register with a 6 digit pin and your full name..."];
 }
 
 #pragma mark - RegisterPinDelegate

@@ -23,9 +23,8 @@ static NSString *kBaseURL = @"https://services.wine.com/";
 }
 
 + (instancetype)sharedManager {
-  static SessionManager *_sessionManager = nil;
-
   static dispatch_once_t onceToken;
+  static SessionManager *_sessionManager;
   dispatch_once(&onceToken, ^{
     _sessionManager = [[self alloc] init];
   });

@@ -13,5 +13,7 @@
 + (instancetype)sharedManager;
 
 - (BOOL)validateName:(NSString *)string;
+- (BOOL)validateEmail:(NSString *)string;
+- (BOOL)validateSearch:(NSString *)string;
 
 @end
