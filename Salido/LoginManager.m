@@ -22,7 +22,7 @@
 
   if (self) {
     _loggedIn = NO;
-    User *user = [[User alloc] initWithFirstName:@"sam" lastName:@"huang" pin:@"111111"];
+    User *user = [[User alloc] initWithFirstName:@"sam" lastName:@"sam" pin:@"111111" email:@"sam@sam.sam"];
     [self registerUser:user];
   }
 
@@ -72,6 +72,16 @@
 }
 
 #pragma mark - Public
+
+- (BOOL)canRegisterUser:(User *)user {
+  RLMResults<User *> *users = [User allObjects];
+  for (User *oldUser in users) {
+    if ((oldUser.firstName == oldUser.lastName && oldUser.lastName == user.lastName) || oldUser.email == user.email || oldUser.pin == user.pin) {
+      return NO;
+    }
+  }
+  return YES;
+}
 
 - (void)registerUser:(User *)user {
   RLMRealm *realm = [RLMRealm defaultRealm];

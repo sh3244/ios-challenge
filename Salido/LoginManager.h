@@ -20,6 +20,7 @@
 
 - (void)performLoginWithPin:(nonnull NSString *)pin completion:(void (^ _Nullable)(void))completion;
 - (void)registerUser:(User * _Nonnull)user;
+- (BOOL)canRegisterUser:(User * _Nonnull)user;
 - (void)performLogOut;
 - (User * _Nonnull)currentUser;
 

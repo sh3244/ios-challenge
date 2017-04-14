@@ -11,7 +11,7 @@
 
 @protocol ForgotPinDelegate <NSObject>
 
-- (void)registerWithName:(NSString *)name withPin:(NSString *)pin;
+- (void)findPinWithEmail:(NSString *)email;
 
 @end
 

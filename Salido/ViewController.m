@@ -43,7 +43,6 @@
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
-
   return YES;
 }
 

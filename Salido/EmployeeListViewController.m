@@ -129,7 +129,10 @@
   [cell.userFirstNameLabel setText:user.firstName];
   [cell.userLastNameLabel setText:user.lastName];
   [cell.userEmailLabel setText:user.email];
-  [cell.userDateLabel setText:@"Hired on Date"];
+  NSDateFormatter *objDateFormatter = [[NSDateFormatter alloc] init];
+  [objDateFormatter setDateFormat:@"yyyy-MM-dd"];
+  NSString *dateString = [objDateFormatter stringFromDate:user.hiringDate];
+  [cell.userDateLabel setText:dateString];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

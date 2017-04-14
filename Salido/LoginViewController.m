@@ -9,18 +9,20 @@
 #import "LoginViewController.h"
 #import "LoginPinView.h"
 #import "RegisterPinView.h"
+#import "ForgotPinView.h"
 #import <Facade/UIView+Facade.h>
 
 #import "ItemListViewController.h"
 
 #import "LoginManager.h"
+#import "APIManager.h"
+#import "AlertManager.h"
 
-#import "Constant.h"
-
-@interface LoginViewController () <LoginPinViewDelegate, RegisterPinDelegate>
+@interface LoginViewController () <LoginPinDelegate, RegisterPinDelegate, ForgotPinDelegate>
 
 @property (nonatomic, strong) LoginPinView *loginPinView;
 @property (nonatomic, strong) RegisterPinView *registerPinView;
+@property (nonatomic, strong) ForgotPinView *forgotPinView;
 
 @end
 
@@ -42,6 +44,11 @@
 
   _registerPinView.alpha = 0;
   _registerPinView.delegate = self;
+
+  _forgotPinView = [ForgotPinView new];
+  _forgotPinView.alpha = 0;
+  _forgotPinView.delegate = self;
+  [self.view addSubview:_forgotPinView];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -49,9 +56,31 @@
 
   [_loginPinView anchorInCenterFillingWidthAndHeightWithLeftAndRightPadding:10 topAndBottomPadding:10];
   [_registerPinView anchorInCenterFillingWidthAndHeightWithLeftAndRightPadding:10 topAndBottomPadding:10];
+  [_forgotPinView anchorInCenterFillingWidthAndHeightWithLeftAndRightPadding:10 topAndBottomPadding:10];
 }
 
-#pragma mark - LoginPinViewDelegate
+- (void)didSelectRegister {
+  [UIView animateWithDuration:0.5 animations:^{
+    _loginPinView.alpha = 0;
+  } completion:^(BOOL finished) {
+    [UIView animateWithDuration:0.5 animations:^{
+      _registerPinView.alpha = 1;
+    }];
+  }];
+}
+
+- (void)didSelectForgotPin {
+  [UIView animateWithDuration:0.5 animations:^{
+    _loginPinView.alpha = 0;
+  } completion:^(BOOL finished) {
+    [UIView animateWithDuration:0.5 animations:^{
+      _forgotPinView.alpha = 1;
+    }];
+  }];
+}
+
+
+#pragma mark - LoginPinDelegate
 
 - (void)didEnterPin:(NSString *)pin {
   [_loginPinView resetPinCode];
@@ -64,29 +93,44 @@
   }
 }
 
-- (void)didSelectRegister {
-  [UIView animateWithDuration:base_duration animations:^{
-    _loginPinView.alpha = 0;
-  } completion:^(BOOL finished) {
-    [UIView animateWithDuration:base_duration animations:^{
-      _registerPinView.alpha = 1;
-    }];
-  }];
-}
-
-// TODO
-- (void)didSelectForgotPin {
-
-}
-
 #pragma mark - RegisterPinDelegate
 
 - (void)registerWithFirstName:(NSString *)firstName lastName:(NSString *)lastName withPin:(NSString *)pin withEmail:(NSString *)email {
   User *user = [[User alloc] initWithFirstName:firstName lastName:lastName pin:pin email:email];
-  [[LoginManager sharedManager] registerUser:user];
+  if ([[LoginManager sharedManager] canRegisterUser:user]) {
+    [[LoginManager sharedManager] registerUser:user];
+  }
+  else {
+    // Pin, email, or last name are not cool...
+    [[AlertManager sharedManager] showAlertWithMessage:@"Registration failed..."];
+  }
 
   [UIView animateWithDuration:1 animations:^{
     _registerPinView.alpha = 0;
+  } completion:^(BOOL finished) {
+    [UIView animateWithDuration:1 animations:^{
+      _loginPinView.alpha = 1;
+    }];
+  }];
+}
+
+#pragma mark - ForgotPinDelegate
+
+- (void)findPinWithEmail:(NSString *)email {
+  [[APIManager sharedManager] fetchRealmUsersWithCompletion:^(NSArray<User *> *users) {
+    for (User *user in users) {
+      if (user.email == email) {
+        NSString *message = @"Found pin by email. Pin:";
+        [[AlertManager sharedManager] showGoodAlertWithMessage:[message stringByAppendingString:user.pin]];
+      }
+      else {
+        [[AlertManager sharedManager] showAlertWithMessage:@"Email not found!"];
+      }
+    }
+  }];
+
+  [UIView animateWithDuration:1 animations:^{
+    _forgotPinView.alpha = 0;
   } completion:^(BOOL finished) {
     [UIView animateWithDuration:1 animations:^{
       _loginPinView.alpha = 1;
