@@ -13,25 +13,18 @@
 #import "ShoppingCartViewController.h"
 #import "EmployeeListViewController.h"
 
-#import <Realm/Realm.h>
 #import "APIManager.h"
 #import "LoginManager.h"
-
-#import "CatalogRequestModel.h"
-#import "CatalogResponseModel.h"
-#import "CatalogModel.h"
-#import "ItemModel.h"
+#import "AlertManager.h"
 
 #import "Item.h"
 
-#import "Constant.h"
-
-@interface ItemListViewController () <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, UISearchBarDelegate>
+@interface ItemListViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, ItemTableViewCellDelegate, TransitionViewDelegate>
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, strong) RLMResults<Item *> *items;
+@property (nonatomic, strong) NSMutableArray<Item *> *items;
 
 @property (nonatomic, strong) NSMutableArray<NSIndexPath *> *selectedPaths;
 
@@ -45,17 +38,76 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.title = @"Main";
-  _searchString = @"wine";
+  self.title = @"Wine.com API";
+  _searchString = @"";
   _firstLaunch = YES;
 
+  [self setupSearchBar];
+
+  [self setupTableView];
+
+  [self setupNavigationBar];
+
+  _selectedPaths = [NSMutableArray new];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  if (![[LoginManager sharedManager] currentlyLoggedIn]) {
+    [self launchLoginViewController];
+  } else if (_firstLaunch){
+    NSString *name = [[LoginManager sharedManager] currentUserName];
+
+    [[AlertManager sharedManager] showGoodAlertWithMessage:[@"Welcome..." stringByAppendingString:name]];
+
+    [[APIManager sharedManager] fetchCatalogItemsWith:@"wine" completion:^(NSArray<Item *> *items) {
+      self.items = items.mutableCopy;
+      [_tableView reloadData];
+    }];
+
+    _firstLaunch = NO;
+  }
+}
+
+- (void)viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
+  [_searchBar anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:40];
+  [_tableView alignUnder:_searchBar matchingLeftAndRightFillingHeightWithTopPadding:0 bottomPadding:0];
+}
+
+- (void (^)(void))itemCellActionButtonPressedWithValue:(NSInteger)value atIndex:(NSInteger)index {
+  if ([[LoginManager sharedManager] currentUser]) {
+      User *user = [[LoginManager sharedManager] currentUser];
+    [[APIManager sharedManager] updateRealmWith:[_items objectAtIndex:index] forUser:user withCount:value];
+  }
+  return ^{
+
+  };
+}
+
+- (void)launchViewController:(NSString *)viewControllerName {
+  Class class = NSClassFromString(viewControllerName);
+  UIViewController *controller = [[class alloc] init];
+  NavigationController *navController = [[NavigationController new] initWithRootViewController:controller];
+  [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - Search + Table
+
+- (void)refreshTableView:(UIRefreshControl *)refreshControl {
+  [refreshControl endRefreshing];
+}
+
+- (void)setupSearchBar {
   _searchBar = [UISearchBar new];
   [self.view addSubview:_searchBar];
   _searchBar.barStyle = UISearchBarStyleMinimal;
   _searchBar.tintColor = [UIColor whiteColor];
   _searchBar.delegate = self;
-  [_searchBar setText:_searchString];
+  [_searchBar setPlaceholder:@"search wine.com, ex. \"2014\" or \"merlot\"..."];
+}
 
+- (void)setupTableView {
   _tableView = [UITableView new];
   [self.view addSubview:_tableView];
   _tableView.backgroundColor = [UIColor blackColor];
@@ -70,36 +122,16 @@
   _tableView.delegate = self;
   _tableView.dataSource = self;
   [_tableView registerClass:[ItemTableViewCell class] forCellReuseIdentifier:NSStringFromClass([ItemTableViewCell class])];
+}
 
+- (void)setupNavigationBar {
   UIBarButtonItem *logOutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOut)];
+  UIBarButtonItem *employeeListButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"iconProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEmployeeListViewController)];
+
+  self.navigationItem.leftBarButtonItems = @[logOutButton, employeeListButton];
+
   UIBarButtonItem *viewCartButton = [[UIBarButtonItem alloc] initWithTitle:@"Cart" style:UIBarButtonItemStylePlain target:self action:@selector(launchShoppingCartViewController)];
-  self.navigationItem.leftBarButtonItems = @[logOutButton, viewCartButton];
-
-  _selectedPaths = [NSMutableArray new];
-
-  [[LoginManager sharedManager] registerUserWithName:@"sam huang" withPin:@"111111" withEmail:@"fake@fake.fake"];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-  if (![[LoginManager sharedManager] currentlyLoggedIn]) {
-    [self launchLoginViewController];
-  } else if (_firstLaunch){
-    [self update];
-    // TODO alert
-    _firstLaunch = NO;
-  }
-}
-
-- (void)viewWillLayoutSubviews {
-  [super viewWillLayoutSubviews];
-  [_searchBar anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:40];
-  [_tableView alignUnder:_searchBar matchingLeftAndRightFillingHeightWithTopPadding:0 bottomPadding:0];
-}
-
-- (void)refreshTableView:(UIRefreshControl *)refreshControl {
-  [refreshControl endRefreshing];
-  [self update];
+  self.navigationItem.rightBarButtonItem = viewCartButton;
 }
 
 #pragma mark - UISearchBar Delegate
@@ -108,10 +140,13 @@
   [_searchBar resignFirstResponder];
   if (searchBar.text.length > 0) {
     _searchString = searchBar.text;
-    [UIView animateWithDuration:base_duration animations:^{
+    [UIView animateWithDuration:1 animations:^{
       _tableView.alpha = 0;
     } completion:^(BOOL finished) {
-      [self update];
+      [[APIManager sharedManager] fetchCatalogItemsWith:searchBar.text completion:^(NSArray<Item *> *items) {
+        self.items = items.mutableCopy;
+        [_tableView reloadData];
+      }];
     }];
   }
 }
@@ -119,12 +154,46 @@
 #pragma mark - UITableView Datasource
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(ItemTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-  Item *item = [_items objectAtIndex:indexPath.row];
-  [cell setupWithItem:item];
-}
+  // TableView hidden :)
+  if (_tableView.alpha == 0) {
+    [UIView animateWithDuration:1
+                          delay:0
+                        options:UIViewAnimationOptionTransitionCrossDissolve
+                     animations:^{
+                       _tableView.alpha = 1;
+                     } completion:nil];
+  }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//  [cell setNeedsLayout];
+  Item *item = [_items objectAtIndex:indexPath.row];
+  if (!item) {
+    return;
+  }
+
+  // Setup cell
+  cell.index = indexPath.row;
+  cell.delegate = self;
+  [cell.itemNameLabel setText:item.name];
+  [cell.minPriceLabel setText:[NSString stringWithFormat:@"$%.02f", @(item.minPrice).floatValue]];
+  [cell.itemTypeLabel setText:[NSString stringWithFormat:@"Kind: %@", item.type]];
+  [cell.vintageLabel setText:[NSString stringWithFormat:@"Year: %@", item.vintage]];
+  [cell.actionButton setTitle:@"+" forState:UIControlStateNormal];
+  cell.countField.delegate = self;
+
+  NSMutableAttributedString * str = [[NSMutableAttributedString alloc] initWithString:item.url];
+  [str addAttribute: NSLinkAttributeName value: item.url range: NSMakeRange(0, str.length)];
+
+  [cell.urlLabel setAttributedText:str];
+
+  ItemImage *image = item.images.firstObject;
+  NSString *imageURL = image.imageURL;
+  dispatch_async(dispatch_get_global_queue(0,0), ^{
+    NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+    if (data == nil)
+      return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [cell.itemImageView setImage:[UIImage imageWithData: data]];
+    });
+  });
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -145,7 +214,7 @@
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*) indexPath {
   if ([_selectedPaths containsObject:indexPath]) {
-    return 250;
+    return 210;
   } else {
     return 90;
   }
@@ -161,52 +230,7 @@
   return 1;
 }
 
-#pragma mark - Data
-
-- (void)update {
-  CatalogRequestModel *requestModel = [CatalogRequestModel new];
-  requestModel.offset = 0;
-  requestModel.size = @(10).integerValue;
-  requestModel.search = _searchString;
-  [[APIManager sharedManager] getItemsWithRequestModel:requestModel
-                                               success:^(CatalogResponseModel *responseModel){
-                                                 [self updateRealm:responseModel];
-                                               } failure:^(NSError *error) {
-
-                                               }];
-}
-
-- (void)updateRealm:(CatalogResponseModel *)responseModel {
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    @autoreleasepool {
-      RLMRealm *realm = [RLMRealm defaultRealm];
-      [realm beginWriteTransaction];
-      [realm deleteAllObjects];
-      [realm commitWriteTransaction];
-
-      [realm beginWriteTransaction];
-      for(ItemModel *item in responseModel.items){
-        Item *itemRealm = [[Item alloc] initWithMantleModel:item];
-        [realm addObject:itemRealm];
-      }
-      [realm commitWriteTransaction];
-
-      dispatch_async(dispatch_get_main_queue(), ^{
-        RLMResults *items = [Item allObjectsInRealm:[RLMRealm defaultRealm]];
-        _items = items;
-        [_selectedPaths removeAllObjects];
-        [_tableView reloadData];
-        if (_tableView.alpha != 1) {
-          [UIView animateWithDuration:base_duration animations:^{
-            _tableView.alpha = 1;
-          }];
-        }
-      });
-    }
-  });
-}
-
-#pragma mark - Launch
+#pragma mark - Lifecycle
 
 - (void)launchLoginViewController {
   LoginViewController *loginController = [LoginViewController new];
@@ -215,14 +239,16 @@
 }
 
 - (void)launchEmployeeListViewController {
-  EmployeeListViewController *loginController = [EmployeeListViewController new];
-  NavigationController *navController = [[NavigationController new] initWithRootViewController:loginController];
+  EmployeeListViewController *controller = [EmployeeListViewController new];
+  controller.delegate = self;
+  NavigationController *navController = [[NavigationController new] initWithRootViewController:controller];
   [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)launchShoppingCartViewController {
-  ShoppingCartViewController *loginController = [ShoppingCartViewController new];
-  NavigationController *navController = [[NavigationController new] initWithRootViewController:loginController];
+  ShoppingCartViewController *controller = [ShoppingCartViewController new];
+  controller.delegate = self;
+  NavigationController *navController = [[NavigationController new] initWithRootViewController:controller];
   [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 

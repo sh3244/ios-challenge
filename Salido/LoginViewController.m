@@ -17,7 +17,7 @@
 
 #import "Constant.h"
 
-@interface LoginViewController () <LoginPinDelegate, RegisterPinDelegate>
+@interface LoginViewController () <LoginPinViewDelegate, RegisterPinDelegate>
 
 @property (nonatomic, strong) LoginPinView *loginPinView;
 @property (nonatomic, strong) RegisterPinView *registerPinView;
@@ -36,7 +36,8 @@
 
   _registerPinView = [RegisterPinView new];
   [self.view addSubview:_registerPinView];
-  _registerPinView.nameField.delegate = self;
+  _registerPinView.firstNameField.delegate = self;
+  _registerPinView.lastNameField.delegate = self;
   _registerPinView.emailField.delegate = self;
 
   _registerPinView.alpha = 0;
@@ -50,23 +51,17 @@
   [_registerPinView anchorInCenterFillingWidthAndHeightWithLeftAndRightPadding:10 topAndBottomPadding:10];
 }
 
-#pragma mark - LoginPinDelegate
-
-- (void)userLoggedIn {
-  UINavigationController *navigationController = [self navigationController];
-
-  ItemListViewController *controller = [ItemListViewController new];
-  [navigationController pushViewController:controller animated:YES];
-}
+#pragma mark - LoginPinViewDelegate
 
 - (void)didEnterPin:(NSString *)pin {
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoggedIn) name:@"LoginManagerLoggedIn" object:nil];
-
   [_loginPinView resetPinCode];
-
   [[LoginManager sharedManager] performLoginWithPin:pin completion:^{
     [self dismissViewControllerAnimated:YES completion:nil];
   }];
+
+  if (![[LoginManager sharedManager] currentlyLoggedIn]) {
+    [_loginPinView warnValidation];
+  }
 }
 
 - (void)didSelectRegister {
@@ -86,8 +81,9 @@
 
 #pragma mark - RegisterPinDelegate
 
-- (BOOL)registerWithName:(NSString *)name withPin:(NSString *)pin withEmail:(NSString *)email {
-  [[LoginManager sharedManager] registerUserWithName:name withPin:pin withEmail:email];
+- (void)registerWithFirstName:(NSString *)firstName lastName:(NSString *)lastName withPin:(NSString *)pin withEmail:(NSString *)email {
+  User *user = [[User alloc] initWithFirstName:firstName lastName:lastName pin:pin email:email];
+  [[LoginManager sharedManager] registerUser:user];
 
   [UIView animateWithDuration:1 animations:^{
     _registerPinView.alpha = 0;
@@ -96,8 +92,6 @@
       _loginPinView.alpha = 1;
     }];
   }];
-
-  return true;
 }
 
 @end

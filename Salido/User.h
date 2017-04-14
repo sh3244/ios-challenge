@@ -11,14 +11,23 @@
 
 @interface User : RLMObject
 
-@property NSString *name;
+@property NSString *firstName;
+@property NSString *lastName;
 @property NSString *pin;
 
 @property NSString *email;
+
+@property RLMArray<Item *><Item> *cart;
+
+@property NSDate *hiringDate;
+
+- (instancetype)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName pin:(NSString *)pin email:(NSString *)email;
+
+- (instancetype)initWithFirstName:(NSString *)firstName lastName:(NSString *)lastName pin:(NSString *)pin;
+
+- (void)setHiringDateNow;
+
 //@property NSString *phone;
-//@property NSDate *hiringDate;
-//
-//@property RLMArray<Item *><Item> *cart;
 
 @end
 

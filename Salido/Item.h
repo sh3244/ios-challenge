@@ -18,6 +18,7 @@
 @property double minPrice;
 @property NSString *vintage;
 @property NSString *url;
+@property NSInteger count;
 
 - (id)initWithMantleModel:(ItemModel *)itemModel;
 

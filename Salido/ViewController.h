@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TransitionViewDelegate <NSObject>
+
+- (void)launchViewController:(NSString *)viewControllerName;
+
+@end
+
 @interface ViewController : UIViewController <UITextFieldDelegate>
 
 - (void)setupModalStyle;

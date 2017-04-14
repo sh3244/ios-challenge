@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "View.h"
 
-@protocol LoginPinDelegate <NSObject>
+@protocol LoginPinViewDelegate <NSObject>
 
-- (void)userLoggedIn;
 - (void)didEnterPin:(NSString *)pin;
 - (void)didSelectRegister;
 - (void)didSelectForgotPin;
@@ -20,8 +19,9 @@
 
 @interface LoginPinView : View
 
-@property (nonatomic, weak) id<LoginPinDelegate> delegate;
+@property (nonatomic, weak) id<LoginPinViewDelegate> delegate;
 
+- (void)warnValidation;
 - (void)resetPinCode;
 
 @end

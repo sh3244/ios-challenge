@@ -14,10 +14,30 @@
   static dispatch_once_t onceToken;
   static StringManager *sharedManager;
   dispatch_once(&onceToken, ^{
-    sharedManager = [[StringManager alloc] init];
+    sharedManager = [[self alloc] init];
   });
 
   return sharedManager;
+}
+
+- (NSString *)updatePin:(NSString *)pin withSingleValue:(NSString *)value {
+  assert(value.length == 1);
+  NSInteger pinOriginalLength = pin.length;
+
+  NSString *pinEntered = [pin stringByReplacingOccurrencesOfString:@"*" withString:@""];
+
+  // Reset if entire pin entered
+  if (pinEntered.length == pinOriginalLength) {
+    return [@"*" stringByPaddingToLength:pinOriginalLength withString:@"*" startingAtIndex:0];
+  }
+
+  NSString *newPinEntered = [pinEntered stringByAppendingString:value];
+
+  while (newPinEntered.length < pinOriginalLength) {
+    newPinEntered = [newPinEntered stringByAppendingString:@"*"];
+  }
+
+  return newPinEntered;
 }
 
 #pragma mark - Search Validation
@@ -36,6 +56,11 @@
   return [self validateString:string withRegexPattern:@"^[a-z0-9]+@[a-z0-9]+\\.[a-z0-9]+$"];
 }
 
+- (BOOL)validatePin:(NSString *)string {
+  return [self validateString:string withRegexPattern:@"^[0-9]{6}$"];
+}
+
+
 - (BOOL)validateString:(NSString *)string withRegexPattern:(NSString *)pattern {
   NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
 
@@ -48,14 +73,5 @@
 
   return didValidate;
 }
-
-//- (BOOL)inputIsValid {
-//  if ([[_pinDisplayCode stringByReplacingOccurrencesOfString:@"*" withString:@""] isEqualToString:_pinDisplayCode]) {
-//    if (_nameField.text.length > 3 && [_nameField.text containsString:@" "]) {
-//      return true;
-//    }
-//  }
-//  return NO;
-//}
 
 @end

@@ -35,6 +35,8 @@
   }];
 }
 
+// String Manager Tests
+
 - (void)testNameValidation {
   XCTAssertTrue([_stringManager validateName:@"Sam"]);
   XCTAssertFalse([_stringManager validateName:@"sam!"]);
@@ -51,6 +53,11 @@
 - (void)testSearchValidation {
   XCTAssertTrue([_stringManager validateSearch:@"wine yard"]);
   XCTAssertFalse([_stringManager validateSearch:@"wine yards ."]);
+}
+
+- (void)testPinValidation {
+  XCTAssertTrue([_stringManager validatePin:@"482939"]);
+  XCTAssertFalse([_stringManager validatePin:@"4829393"]);
 }
 
 @end

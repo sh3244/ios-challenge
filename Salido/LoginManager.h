@@ -16,9 +16,11 @@
 + (nonnull instancetype)sharedManager;
 
 - (BOOL)currentlyLoggedIn;
+- (nullable NSString *)currentUserName;
 
 - (void)performLoginWithPin:(nonnull NSString *)pin completion:(void (^ _Nullable)(void))completion;
-- (void)registerUserWithName:(nonnull NSString *)name withPin:(nonnull NSString *)pin withEmail:(nonnull NSString *)email;
+- (void)registerUser:(User * _Nonnull)user;
 - (void)performLogOut;
+- (User * _Nonnull)currentUser;
 
 @end

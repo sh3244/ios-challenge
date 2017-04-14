@@ -8,6 +8,7 @@
 
 #import "RegisterPinView.h"
 #import "AlertManager.h"
+#import "StringManager.h"
 
 @interface RegisterPinView()
 
@@ -80,9 +81,13 @@
   _pinLabel.font = [UIFont boldSystemFontOfSize:48];
   [self addSubview:_pinLabel];
 
-  _nameField = [TextField new];
-  _nameField.placeholder = @"name";
-  [self addSubview:_nameField];
+  _firstNameField = [TextField new];
+  _firstNameField.placeholder = @"first name";
+  [self addSubview:_firstNameField];
+
+  _lastNameField = [TextField new];
+  _lastNameField.placeholder = @"last name";
+  [self addSubview:_lastNameField];
 
   _emailField = [TextField new];
   _emailField.placeholder = @"email";
@@ -97,8 +102,9 @@
 }
 
 - (void)layoutSubviews {
-  [_nameField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
-  [_emailField alignUnder:_nameField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
+  [_firstNameField anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
+  [_lastNameField alignUnder:_firstNameField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
+  [_emailField alignUnder:_lastNameField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:40];
   [_pinLabel alignUnder:_emailField centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:80];
   [_registerButton anchorBottomCenterFillingWidthWithLeftAndRightPadding:10 bottomPadding:10 height:80];
 
@@ -107,65 +113,61 @@
   [_button0 alignUnder:_button8 matchingCenterWithTopPadding:10 width:_button8.width height:_button8.height];
 }
 
+# pragma mark - View Model
+
 - (void)pinButtonPressed:(Button *)sender {
-  NSInteger pinLength = _pinDisplayCode.length;
-
-  NSString *pinEntered = [_pinDisplayCode stringByReplacingOccurrencesOfString:@"*" withString:@""];
-  NSInteger pinEnteredLength = pinEntered.length + 1;
-
-  NSString *senderPinValue = sender.titleLabel.text;
-  NSString *newPinEntered = [pinEntered stringByAppendingString:senderPinValue];
-
-  NSInteger missingLength = pinLength - pinEnteredLength;
-
-  if (missingLength == -1) {
-    [self updatePinCode:@"******"];
-  }
-  else if (missingLength == 0) {
-    [self updatePinCode:newPinEntered];
-  }
-  else {
-    while (newPinEntered.length != pinLength) {
-      newPinEntered = [newPinEntered stringByAppendingString:@"*"];
-    }
-    [self updatePinCode:newPinEntered];
-  }
+  _pinDisplayCode = [[StringManager sharedManager] updatePin:_pinDisplayCode withSingleValue:sender.titleLabel.text];
+  [self updatePinCode];
 }
 
 - (BOOL)inputIsValid {
-  if ([[_pinDisplayCode stringByReplacingOccurrencesOfString:@"*" withString:@""] isEqualToString:_pinDisplayCode]) {
-    if (_nameField.text.length > 3 && [_nameField.text containsString:@" "]) {
-      return true;
+  __weak StringManager *manager = [StringManager sharedManager];
+  if ([manager validatePin:_pinDisplayCode]) {
+    if ([manager validateName:_firstNameField.text]) {
+      if ([manager validateName:_lastNameField.text]) {
+        if ([manager validateEmail:_emailField.text]) {
+
+        }
+        return YES;
+      }
     }
   }
   return NO;
 }
 
 - (void)warnValidation {
-  [[AlertManager sharedManager] showAlertWithMessage:@"Register with a 6 digit pin and your full name..."];
+  [[AlertManager sharedManager] showAlertWithMessage:@"Please register with a 6 digit pin, first name, and last name..."];
+}
+
+- (void)showSuccess {
+  [[AlertManager sharedManager] showGoodAlertWithMessage:@"Registered!"];
+}
+
+- (void)updatePinCode {
+  [_pinLabel setText:_pinDisplayCode];
+}
+
+- (void)reset {
+  [_firstNameField setText:@""];
+  [_lastNameField setText:@""];
+  [_emailField setText:@""];
+  [_pinLabel setText:@""];
 }
 
 #pragma mark - RegisterPinDelegate
 
 - (void)registerButtonPressed:(Button *)sender {
   if ([self inputIsValid]) {
-    [_delegate registerWithName:_nameField.text withPin:_pinDisplayCode withEmail:_emailField.text];
+    if ([[StringManager sharedManager] validateEmail:_emailField.text]) {
+    [_delegate registerWithFirstName:_firstNameField.text lastName:_lastNameField.text withPin:_pinDisplayCode withEmail:_emailField.text];
+    }
+    [_delegate registerWithFirstName:_firstNameField.text lastName:_lastNameField.text withPin:_pinDisplayCode withEmail:@""];
     [self reset];
+    return;
   }
-  else {
-    [self warnValidation];
-  }
-}
 
-- (void)updatePinCode:(NSString *)pin {
-  [_pinLabel setText:pin];
-  _pinDisplayCode = pin;
-}
-
-- (void)reset {
-  [self updatePinCode:@""];
-  [_nameField setText:@""];
-  [_emailField setText:@""];
+  [self reset];
+  [self warnValidation];
 }
 
 @end

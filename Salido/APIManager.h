@@ -9,9 +9,19 @@
 #import "SessionManager.h"
 #import "CatalogRequestModel.h"
 #import "CatalogResponseModel.h"
+#import "Item.h"
+#import "User.h"
 
 @interface APIManager : SessionManager
 
-- (NSURLSessionDataTask *)getItemsWithRequestModel:(CatalogRequestModel *)requestModel success:(void (^)(CatalogResponseModel *responseModel))success failure:(void (^)(NSError *error))failure;
++ (instancetype)sharedManager;
+
+- (void)fetchCatalogItemsWith:(NSString *)search completion:(void (^)(NSArray<Item *> *items))completion;
+
+- (void)fetchRealmUsersWithCompletion:(void (^)(NSArray<User *> *users))completion;
+- (void)fetchRealmCartForUser:(User *)user completion: (void (^)(NSArray<Item *> *items))completion;
+
+- (void)updateRealmWith:(Item *)item forUser:(User *)user withCount:(NSInteger)count;
+- (void)checkoutRealmCartForUser:(User *)user;
 
 @end

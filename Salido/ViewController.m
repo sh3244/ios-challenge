@@ -33,23 +33,21 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+  [textField resignFirstResponder];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
   textField.returnKeyType = UIReturnKeyDone;
   return YES;
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
 
   return YES;
 }
 
-- (BOOL)textFieldShouldClear:(UITextField *)textField{
-
-  return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
   [textField resignFirstResponder];
   return YES;
 }

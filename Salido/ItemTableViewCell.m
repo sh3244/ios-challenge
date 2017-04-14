@@ -8,18 +8,7 @@
 
 #import "ItemTableViewCell.h"
 
-#import "Item.h"
-
 @interface ItemTableViewCell()
-
-@property (nonatomic, strong) ImageView *itemImageView;
-@property (nonatomic, strong) Label *itemNameLabel;
-@property (nonatomic, strong) Label *itemTypeLabel;
-@property (nonatomic, strong) Label *minPriceLabel;
-@property (nonatomic, strong) Label *vintageLabel;
-@property (nonatomic, strong) Label *urlLabel;
-
-@property (nonatomic, strong) Item *item;
 
 @end
 
@@ -39,12 +28,21 @@
     _minPriceLabel = [Label new];
     _vintageLabel = [Label new];
     _urlLabel = [Label new];
+    _countField = [TextField new];
+    _actionButton = [Button new];
+
+    [_actionButton.titleLabel setFont:[UIFont systemFontOfSize:30]];
+    [_actionButton addTarget:self action:@selector(actionButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [_countField setFont:[UIFont systemFontOfSize:30]];
+    _countField.text = @"1";
   }
   return self;
 }
 
 - (void)layoutSubviews {
   [super layoutSubviews];
+
+  // Expanded
   if (self.contentView.height > 120) {
     [self.contentView addSubview:_itemImageView];
     [self.contentView addSubview:_itemNameLabel];
@@ -52,53 +50,52 @@
     [self.contentView addSubview:_itemTypeLabel];
     [self.contentView addSubview:_vintageLabel];
     [self.contentView addSubview:_urlLabel];
+    [self.contentView addSubview:_actionButton];
+    [self.contentView addSubview:_countField];
+
     [_itemImageView anchorTopLeftWithLeftPadding:10 topPadding:10 width:100 height:100];
-    [_itemNameLabel alignToTheRightOf:_itemImageView matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:35];
-    [_minPriceLabel alignUnder:_itemNameLabel matchingLeftAndFillingWidthWithRightPadding:10 topPadding:10 height:35];
-    [_itemTypeLabel alignUnder:_itemImageView centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:35];
-    [_vintageLabel alignUnder:_itemTypeLabel centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:35];
-    [_urlLabel alignUnder:_vintageLabel centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:35];
+    [_itemNameLabel alignToTheRightOf:_itemImageView matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:20];
+    [_minPriceLabel alignUnder:_itemNameLabel matchingLeftWithTopPadding:10 width:200 height:35];
+    [_countField alignToTheRightOf:_minPriceLabel matchingTopWithLeftPadding:10 width:35 height:35];
+    [_actionButton alignToTheRightOf:_countField matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:20];
+    [_itemTypeLabel alignUnder:_itemImageView centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:20];
+    [_vintageLabel alignUnder:_itemTypeLabel centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:20];
+    [_urlLabel alignUnder:_vintageLabel centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:20];
   }
+  // Compact
   else {
     [self.contentView addSubview:_itemImageView];
     [self.contentView addSubview:_itemNameLabel];
     [self.contentView addSubview:_minPriceLabel];
+    [self.contentView addSubview:_actionButton];
+    [self.contentView addSubview:_countField];
+
     [_itemImageView anchorTopLeftWithLeftPadding:10 topPadding:10 width:70 height:70];
-    [_itemNameLabel alignToTheRightOf:_itemImageView matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:35];
-    [_minPriceLabel alignUnder:_itemNameLabel matchingLeftAndFillingWidthWithRightPadding:10 topPadding:10 height:35];
+    [_itemNameLabel alignToTheRightOf:_itemImageView matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:20];
+    [_minPriceLabel alignUnder:_itemNameLabel matchingLeftWithTopPadding:10 width:230 height:35];
+    [_countField alignToTheRightOf:_minPriceLabel matchingTopWithLeftPadding:10 width:35 height:35];
+    [_actionButton alignToTheRightOf:_countField matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:35];
   }
 }
 
-- (void)setupWithItem:(Item *)item {
-  [_itemNameLabel setText:item.name];
-  [_minPriceLabel setText:@(item.minPrice).stringValue];
-  [_itemTypeLabel setText:item.type];
-  [_vintageLabel setText:item.vintage];
-
-  NSMutableAttributedString * str = [[NSMutableAttributedString alloc] initWithString:item.url];
-  [str addAttribute: NSLinkAttributeName value: item.url range: NSMakeRange(0, str.length)];
-
-  [_urlLabel setAttributedText:str];
-
-  ItemImage *image = item.images.firstObject;
-  NSString *imageURL = image.imageURL;
-  dispatch_async(dispatch_get_global_queue(0,0), ^{
-    NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
-    if (data == nil)
-      return;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [_itemImageView setImage:[UIImage imageWithData: data]];
-    });
-  });
+- (void)prepareForReuse {
+  [_itemImageView setImage:nil];
+  [_itemImageView removeFromSuperview];
+  [_itemNameLabel setText:@""];
+  [_itemNameLabel removeFromSuperview];
+  [_minPriceLabel setText:@""];
+  [_minPriceLabel removeFromSuperview];
+  [_itemTypeLabel setText:@""];
+  [_actionButton removeFromSuperview];
+  [_vintageLabel removeFromSuperview];
+  [_countField removeFromSuperview];
+  [_urlLabel removeFromSuperview];
 }
 
-- (void)prepareForReuse {
-  [_itemImageView removeFromSuperview];
-  [_itemNameLabel removeFromSuperview];
-  [_itemTypeLabel removeFromSuperview];
-  [_minPriceLabel removeFromSuperview];
-  [_vintageLabel removeFromSuperview];
-  [_urlLabel removeFromSuperview];
+- (void)actionButtonPressed {
+  if (_delegate) {
+    [_delegate itemCellActionButtonPressedWithValue:_countField.text.integerValue ?: 0 atIndex:_index];
+  }
 }
 
 @end

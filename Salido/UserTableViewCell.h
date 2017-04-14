@@ -6,8 +6,14 @@
 //  Copyright © 2017 Salido. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "View.h"
+#import "User.h"
 
 @interface UserTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) Label *userFirstNameLabel;
+@property (nonatomic, strong) Label *userLastNameLabel;
+@property (nonatomic, strong) Label *userDateLabel;
+@property (nonatomic, strong) Label *userEmailLabel;
 
 @end

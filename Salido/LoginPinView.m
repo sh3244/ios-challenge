@@ -7,6 +7,8 @@
 //
 
 #import "LoginPinView.h"
+#import "AlertManager.h"
+#import "StringManager.h"
 
 @interface LoginPinView()
 
@@ -104,30 +106,7 @@
   [_registerButton alignAbove:_findButton fillingWidthWithLeftAndRightPadding:10 bottomPadding:10 height:80];
 }
 
-#pragma mark - LoginPinDelegate
-
-- (void)pinButtonPressed:(Button *)sender {
-  NSInteger pinLength = _pinDisplayCode.length;
-
-  NSString *pinEntered = [_pinDisplayCode stringByReplacingOccurrencesOfString:@"*" withString:@""];
-  NSInteger pinEnteredLength = pinEntered.length + 1;
-
-  NSString *senderPinValue = sender.titleLabel.text;
-  NSString *newPinEntered = [pinEntered stringByAppendingString:senderPinValue];
-
-  NSInteger missingLength = pinLength - pinEnteredLength;
-
-  if (missingLength == 0) {
-    [self updatePinCode:newPinEntered];
-    [_delegate didEnterPin:_pinDisplayCode];
-  }
-  else {
-    while (newPinEntered.length != pinLength) {
-      newPinEntered = [newPinEntered stringByAppendingString:@"*"];
-    }
-    [self updatePinCode:newPinEntered];
-  }
-}
+#pragma mark - LoginPinViewDelegate
 
 - (void)registerButtonPressed:(Button *)sender {
   [self.delegate didSelectRegister];
@@ -137,9 +116,26 @@
   [self.delegate didSelectForgotPin];
 }
 
-- (void)updatePinCode:(NSString *)pin {
-  [_pinLabel setText:pin];
-  _pinDisplayCode = pin;
+# pragma mark - View Model
+
+- (void)pinButtonPressed:(Button *)sender {
+  _pinDisplayCode = [[StringManager sharedManager] updatePin:_pinDisplayCode withSingleValue:sender.titleLabel.text];
+  [_pinLabel setText:_pinDisplayCode];
+
+  if ([self inputIsValid]) {
+    [_delegate didEnterPin:_pinDisplayCode];
+  }
+}
+
+- (BOOL)inputIsValid {
+  if ([[StringManager sharedManager] validatePin:_pinDisplayCode]) {
+    return YES;
+  }
+  return NO;
+}
+
+- (void)warnValidation {
+  [[AlertManager sharedManager] showAlertWithMessage:@"Wrong Pin..."];
 }
 
 - (void)resetPinCode {

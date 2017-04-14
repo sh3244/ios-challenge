@@ -16,6 +16,7 @@
   if (!self) {
     return nil;
   }
+  _count = 1;
   _name = itemModel.name;
   _type = itemModel.type;
   _minPrice = itemModel.minPrice.doubleValue;

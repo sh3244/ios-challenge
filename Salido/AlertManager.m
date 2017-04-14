@@ -9,40 +9,65 @@
 #import "AlertManager.h"
 #import <CRToast/CRToast.h>
 
+@interface AlertManager()
+
+@property (nonatomic, assign) BOOL isPresenting;
+
+@end
+
 @implementation AlertManager
 
 + (instancetype)sharedManager {
   static dispatch_once_t onceToken;
   static AlertManager *sharedManager;
   dispatch_once(&onceToken, ^{
-    sharedManager = [[AlertManager alloc] init];
+    sharedManager = [[self alloc] init];
+    sharedManager.isPresenting = NO;
   });
 
   return sharedManager;
 }
 
 - (void)showAlertWithMessage:(NSString *)message {
+  if (_isPresenting) {
+    return;
+  }
+  _isPresenting = YES;
   NSDictionary *options = @{
                             kCRToastTextKey : message,
                             kCRToastBackgroundColorKey : [UIColor redColor]
                             };
-  [CRToastManager showNotificationWithOptions:[self defaultOptionsWith:options] completionBlock:nil];
+  [CRToastManager showNotificationWithOptions:[self defaultOptionsWith:options] completionBlock:^{
+    _isPresenting = NO;
+  }];
 }
 
 - (void)showGoodAlertWithMessage:(NSString *)message {
+  if (_isPresenting) {
+    return;
+  }
+  _isPresenting = YES;
   NSDictionary *options = @{
                             kCRToastTextKey : message,
-                            kCRToastBackgroundColorKey : [UIColor greenColor]
+                            kCRToastBackgroundColorKey : [UIColor colorWithRed:0.1 green:0.8 blue:0.2 alpha:1]
                             };
-  [CRToastManager showNotificationWithOptions:[self defaultOptionsWith:options] completionBlock:nil];
+  [CRToastManager showNotificationWithOptions:[self defaultOptionsWith:options] completionBlock:^{
+    _isPresenting = NO;
+  }];
 }
 
 - (void)showNeutralAlertWithMessage:(NSString *)message {
+  if (_isPresenting) {
+    return;
+  }
+  _isPresenting = YES;
   NSDictionary *options = @{
                             kCRToastTextKey : message,
                             kCRToastBackgroundColorKey : [UIColor grayColor]
                             };
-  [CRToastManager showNotificationWithOptions:[self defaultOptionsWith:options] completionBlock:nil];
+  [CRToastManager showNotificationWithOptions:[self defaultOptionsWith:options] completionBlock:^{
+    _isPresenting = NO;
+  }];
 }
 
 - (NSDictionary *)defaultOptionsWith:(NSDictionary *)moreOptions {
@@ -54,12 +79,13 @@
 
 - (NSMutableDictionary *)defaultOptions {
   return @{
-           kCRToastNotificationPreferredHeightKey : @40,
+           kCRToastNotificationTypeKey : @(CRToastTypeCustom),
            kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
            kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
            kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
            kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
-           kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
+           kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop),
+           kCRToastNotificationPreferredHeightKey : @60.0
            }.mutableCopy;
 }
 

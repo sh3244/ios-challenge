@@ -12,8 +12,11 @@
 
 + (instancetype)sharedManager;
 
+- (NSString *)updatePin:(NSString *)pin withSingleValue:(NSString *)value;
+
 - (BOOL)validateName:(NSString *)string;
 - (BOOL)validateEmail:(NSString *)string;
 - (BOOL)validateSearch:(NSString *)string;
+- (BOOL)validatePin:(NSString *)string;
 
 @end

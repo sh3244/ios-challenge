@@ -10,8 +10,8 @@
 
 @interface LoginManager()
 
-@property (nonatomic, assign) User *user;
 @property (nonatomic, assign) BOOL loggedIn;
+@property (nonatomic, strong, nullable) User * user;
 
 @end
 
@@ -22,6 +22,8 @@
 
   if (self) {
     _loggedIn = NO;
+    User *user = [[User alloc] initWithFirstName:@"sam" lastName:@"huang" pin:@"111111"];
+    [self registerUser:user];
   }
 
   return self;
@@ -31,17 +33,20 @@
   static dispatch_once_t onceToken;
   static LoginManager *sharedManager;
   dispatch_once(&onceToken, ^{
-    sharedManager = [[LoginManager alloc] init];
+    sharedManager = [[self alloc] init];
   });
 
   return sharedManager;
 }
+
+//first name duplicates are allowed, but pin, last name, and email addresses must be unique
 
 - (void)loginWithPin:(NSString *)pin {
   [RLMRealm defaultRealm];
 
   RLMResults<User *> *users = [User objectsWhere:@"pin == %@", pin];
   _user = users.firstObject;
+  _loggedIn = YES;
 }
 
 - (BOOL)canLoginWithPin:(NSString *)pin {
@@ -68,18 +73,18 @@
 
 #pragma mark - Public
 
-- (void)registerUserWithName:(NSString *)name withPin:(NSString *)pin withEmail:(NSString *)email {
-  User *newUser = [User new];
-  newUser.name = name;
-  newUser.pin = pin;
-  newUser.email = email;
-
+- (void)registerUser:(User *)user {
   RLMRealm *realm = [RLMRealm defaultRealm];
 
   [realm beginWriteTransaction];
-  [realm addObject:newUser];
+  [realm addObject:user];
   [realm commitWriteTransaction];
 }
+
+//a pin code (numeric values only, required)
+//a first name (required)
+//a last name (required)
+//a valid email address (optional)
 
 - (void)performLoginWithPin:(NSString *)pin completion:(void (^)(void))completion {
   if ([self tryLoginWithPin:pin]) {
@@ -87,7 +92,7 @@
     completion();
   }
   else {
-//    _loggedIn = NO;
+    _loggedIn = NO;
   }
 }
 
@@ -97,7 +102,21 @@
 }
 
 - (BOOL)currentlyLoggedIn {
-  return _loggedIn;
+  return _loggedIn && _user != nil;
+}
+
+- (NSString *)currentUserName {
+  if (!_loggedIn) {
+    return @"";
+  }
+  return [_user.firstName stringByAppendingString:_user.lastName] ?: @"";
+}
+
+- (User *)currentUser {
+  if (_user) {
+    return _user;
+  }
+  return [User new];
 }
 
 @end

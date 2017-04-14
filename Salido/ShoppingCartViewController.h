@@ -11,4 +11,6 @@
 
 @interface ShoppingCartViewController : ViewController
 
+@property (nonatomic, weak) id<TransitionViewDelegate> delegate;
+
 @end
