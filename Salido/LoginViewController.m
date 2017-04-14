@@ -119,7 +119,7 @@
 - (void)findPinWithEmail:(NSString *)email {
   [[APIManager sharedManager] fetchRealmUsersWithCompletion:^(NSArray<User *> *users) {
     for (User *user in users) {
-      if (user.email == email) {
+      if ([user.email isEqualToString:email]) {
         NSString *message = @"Found pin by email. Pin:";
         [[AlertManager sharedManager] showGoodAlertWithMessage:[message stringByAppendingString:user.pin]];
       }

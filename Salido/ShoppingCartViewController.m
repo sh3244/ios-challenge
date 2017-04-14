@@ -80,6 +80,14 @@
   [[APIManager sharedManager] fetchRealmCartForUser:user completion:^(NSArray<Item *> *items) {
     _items = items.mutableCopy;
   }];
+
+  [[APIManager sharedManager] fetchRealmCartForUser:user completion:^(NSArray<Item *> *items) {
+    NSInteger count = 0;
+    for (Item *item in items) {
+      count += item.count;
+    }
+    self.title = [@"Cart Items: " stringByAppendingString:@(count).stringValue];
+  }];
 }
 
 - (void)refreshTableView:(UIRefreshControl *)refreshControl {

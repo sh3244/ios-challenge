@@ -76,7 +76,7 @@
 - (BOOL)canRegisterUser:(User *)user {
   RLMResults<User *> *users = [User allObjects];
   for (User *oldUser in users) {
-    if ((oldUser.firstName == oldUser.lastName && oldUser.lastName == user.lastName) || oldUser.email == user.email || oldUser.pin == user.pin) {
+    if (([oldUser.firstName isEqualToString:user.firstName] && [oldUser.lastName isEqualToString:user.lastName]) || [oldUser.email isEqualToString:user.email] || [oldUser.pin isEqualToString:user.pin]) {
       return NO;
     }
   }

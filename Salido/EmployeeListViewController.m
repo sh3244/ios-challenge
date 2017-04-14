@@ -133,6 +133,14 @@
   [objDateFormatter setDateFormat:@"yyyy-MM-dd"];
   NSString *dateString = [objDateFormatter stringFromDate:user.hiringDate];
   [cell.userDateLabel setText:dateString];
+
+  [[APIManager sharedManager] fetchRealmCartForUser:user completion:^(NSArray<Item *> *items) {
+    NSInteger count = 0;
+    for (Item *item in items) {
+      count += item.count;
+    }
+    [cell.cartCountLabel setText:[@"Cart Items:" stringByAppendingString:@(count).stringValue]];
+  }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -15,5 +15,6 @@
 @property (nonatomic, strong) Label *userLastNameLabel;
 @property (nonatomic, strong) Label *userDateLabel;
 @property (nonatomic, strong) Label *userEmailLabel;
+@property (nonatomic, strong) Label *cartCountLabel;
 
 @end

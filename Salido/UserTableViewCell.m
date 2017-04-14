@@ -27,6 +27,7 @@
     _userLastNameLabel = [Label new];
     _userDateLabel = [Label new];
     _userEmailLabel = [Label new];
+    _cartCountLabel = [Label new];
   }
   return self;
 }
@@ -40,9 +41,11 @@
     [self.contentView addSubview:_userLastNameLabel];
     [self.contentView addSubview:_userDateLabel];
     [self.contentView addSubview:_userEmailLabel];
-    [_userFirstNameLabel anchorTopLeftWithLeftPadding:10 topPadding:10 width:100 height:30];
-    [_userLastNameLabel alignToTheRightOf:_userFirstNameLabel matchingTopWithLeftPadding:10 width:100 height:30];
-    [_userDateLabel alignToTheRightOf:_userLastNameLabel fillingWidthWithLeftAndRightPadding:10 topPadding:10 height:30];
+    [self.contentView addSubview:_cartCountLabel];
+    [_userFirstNameLabel anchorTopLeftWithLeftPadding:10 topPadding:10 width:80 height:30];
+    [_userLastNameLabel alignToTheRightOf:_userFirstNameLabel matchingTopWithLeftPadding:10 width:80 height:30];
+    [_userDateLabel alignToTheRightOf:_userLastNameLabel matchingTopWithLeftPadding:10 width:100 height:30];
+    [_cartCountLabel alignToTheRightOf:_userDateLabel matchingTopAndFillingWidthWithLeftAndRightPadding:10 height:30];
     [_userEmailLabel alignUnder:_userFirstNameLabel centeredFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:30];
   }
   // Compact
@@ -59,6 +62,7 @@
   [_userLastNameLabel removeFromSuperview];
   [_userDateLabel removeFromSuperview];
   [_userEmailLabel removeFromSuperview];
+  [_cartCountLabel removeFromSuperview];
 }
 
 @end
