@@ -22,6 +22,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  self.title = @"Order";
 
   [self setupNavigationBar];
   _orderAgainButton = [Button new];
@@ -31,12 +32,14 @@
   [self.view addSubview:_orderAgainButton];
 
   _thankYouLabel = [Label new];
-  [_thankYouLabel setText:@"Thank You! Order Complete!"];
+  _thankYouLabel.textAlignment = NSTextAlignmentCenter;
+  [_thankYouLabel setFont:[UIFont systemFontOfSize:36]];
+  [_thankYouLabel setText:@"Thanks for your order!"];
   [self.view addSubview:_thankYouLabel];
 }
 
 - (void)viewWillLayoutSubviews {
-  [_thankYouLabel anchorTopCenterFillingWidthWithLeftAndRightPadding:10 topPadding:10 height:600];
+  [_thankYouLabel anchorTopCenterFillingWidthWithLeftAndRightPadding:0 topPadding:0 height:600];
   [_orderAgainButton alignUnder:_thankYouLabel centeredFillingWidthAndHeightWithLeftAndRightPadding:10 topAndBottomPadding:10];
 }
 

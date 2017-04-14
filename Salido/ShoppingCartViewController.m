@@ -43,6 +43,7 @@
   _checkoutButton = [Button new];
   [_checkoutButton setBackgroundColor:[UIColor darkGrayColor]];
   [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
+  [_checkoutButton addTarget:self action:@selector(checkout) forControlEvents:UIControlEventTouchUpInside];
   _checkoutButton.enabled = NO;
   [self.view addSubview:_checkoutButton];
 }
